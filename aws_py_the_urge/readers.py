@@ -17,6 +17,7 @@ def s3_download(bucket_name, key):
     Path(local_output_path).mkdir(parents=True, exist_ok=True)
     LOG.info("Downloading S3: {}/{} to Local: {}".format(
         bucket_name, key, local_output))
+    print('downloading test print')
     s3 = boto3.resource('s3')
     s3.Object(bucket_name, key).download_file(local_output)
     return local_output
