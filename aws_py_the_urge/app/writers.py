@@ -9,9 +9,9 @@ import boto3
 LOG = logging.getLogger(__name__)
 
 
-def write_gzip(items, key):
-    local_output_path = os.path.dirname("/tmp/parsers/parsed/{}".format(key))
-    local_output = "/tmp/parsers/parsed/{}".format(key)
+def write_gzip(items, key, local_prefix):
+    local_output_path = os.path.dirname("{}{}".format(local_prefix, key))
+    local_output = "{}{}".format(local_prefix, key)
     Path(local_output_path).mkdir(parents=True, exist_ok=True)
     with gzip.open(local_output, 'wb') as f:
         f.write(json.dumps(items).encode('utf-8'))

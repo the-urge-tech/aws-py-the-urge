@@ -11,13 +11,12 @@ import boto3
 LOG = logging.getLogger(__name__)
 
 
-def s3_download(bucket_name, key):
-    local_output_path = os.path.dirname("/tmp/parsers/fetched/{}".format(key))
-    local_output = "/tmp/parsers/fetched/{}".format(key)
+def s3_download(bucket_name, key, local_prefix):
+    local_output_path = os.path.dirname("{}{}".format(local_prefix, key))
+    local_output = "{}{}".format(local_prefix, key)
     Path(local_output_path).mkdir(parents=True, exist_ok=True)
     LOG.info("Downloading S3: {}/{} to Local: {}".format(
         bucket_name, key, local_output))
-    print('downloading test print')
     s3 = boto3.resource('s3')
     s3.Object(bucket_name, key).download_file(local_output)
     return local_output
