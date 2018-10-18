@@ -12,11 +12,9 @@ handlers:
         stream: ext://sys.stdout
 
 loggers:
-    lib:
+    aws_py_the_urge.app:
         level: INFO
-    util:
-        level: INFO
-    __main__:
+    aws_py_the_urge.util:
         level: INFO
 
 root:
