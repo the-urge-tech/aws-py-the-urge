@@ -8,10 +8,10 @@ import re
 import urllib.parse
 from typing import NamedTuple, Text
 
-EventRecordBase = NamedTuple("EventRecordBase",
-                             [("object_key", Text), ("event_name", Text),
-                              ("bucket_name", Text), ("key_id", Text),
-                              ("retailer_code", Text)])
+EventRecordBase = NamedTuple(
+    "EventRecordBase", [("object_key", Text), ("event_name", Text),
+                        ("bucket_name", Text), ("named_tmp_file_id", Text),
+                        ("retailer_code", Text)])
 
 
 # TODO not a good usage of namedtuple
@@ -24,12 +24,12 @@ class EventRecord(EventRecordBase):
         kargs['retailer_code'] = matches.group(1)
         matches = re.search('.*?--fetched--(.*?)\..*', object_key)
         if matches:
-            kargs['key_id'] = matches.group(1)
+            kargs['named_tmp_file_id'] = matches.group(1)
         matches = re.search('.*?--parsed--(.*?)\..*', object_key)
         if matches:
-            kargs['key_id'] = matches.group(1)
+            kargs['named_tmp_file_id'] = matches.group(1)
         matches = re.search('.*?--enriched--(.*?)\..*', object_key)
         if matches:
-            kargs['key_id'] = matches.group(1)
+            kargs['named_tmp_file_id'] = matches.group(1)
         self = super(EventRecord, cls).__new__(cls, **kargs)
         return self
