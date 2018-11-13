@@ -1,3 +1,4 @@
+import glob
 import gzip
 import json
 import logging
@@ -52,3 +53,18 @@ def _read_lines(data_file, sample):
     for line in lines:
         jl.append(json.loads(line))
     return jl
+
+
+def load_gz(test_file_path, root_test, folder_name):
+    yaml_name = os.path.basename(test_file_path).replace('_test.py',
+                                                         '').replace('_', '-')
+    folder_path = os.path.join(root_test, '../', "{}/{}".format(
+        folder_name, yaml_name))
+    os.chdir(folder_path)
+    jls = []
+    for f in glob.glob("*.jl.gz"):
+        gz_path = os.path.join(root_test, '../', folder_path, f)
+        print('gz_path')
+        print(gz_path)
+        jls = jls + read_jl_zip(gz_path, '')
+    return jls
