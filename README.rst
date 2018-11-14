@@ -9,7 +9,7 @@ Installation
 ------------
 
 Requirements
-^^^^^^^^^^^^
+------------
 
 Compatibility
 -------------
