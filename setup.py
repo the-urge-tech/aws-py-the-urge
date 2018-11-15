@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="aws_py_the_urge",
-    version="0.1.0",
+    version="0.1.1",
     url="https://github.com/the-urge-tech/aws-py-the-urge.git",
     author="the urge",
     author_email="pierre.caserta@gmail.com",
