@@ -8,7 +8,7 @@ setuptools.setup(
     author_email="pierre.caserta@gmail.com",
     description=
     "An opinionated, minimal cookiecutter template for Python packages",
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     packages=setuptools.find_packages(),
     install_requires=[],
     classifiers=[
