@@ -60,9 +60,8 @@ def load_gz(test_file_path, root_test, folder_name):
                                                          '').replace('_', '-')
     folder_path = os.path.join(root_test, '../', "{}/{}".format(
         folder_name, yaml_name))
-    os.chdir(folder_path)
     jls = []
-    for f in glob.glob("*.jl.gz"):
+    for f in glob.glob("{}/*.jl.gz".format(folder_path)):
         gz_path = os.path.join(root_test, '../', folder_path, f)
         print('gz_path')
         print(gz_path)
