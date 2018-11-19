@@ -22,14 +22,14 @@ class EventRecord(EventRecordBase):
         kargs['object_key'] = object_key
         matches = re.search('.*?\/retailer_code=(.*?)\/.*', object_key)
         kargs['retailer_code'] = matches.group(1)
-        matches = re.search('.*?--fetched--(.*?)\..*', object_key)
-        if matches:
-            kargs['named_tmp_file_id'] = matches.group(1)
-        matches = re.search('.*?--parsed--(.*?)\..*', object_key)
-        if matches:
-            kargs['named_tmp_file_id'] = matches.group(1)
-        matches = re.search('.*?--enriched--(.*?)\..*', object_key)
-        if matches:
-            kargs['named_tmp_file_id'] = matches.group(1)
+        matches = re.search('.*?--fetched_(.*)?--(.*?)\..*', object_key)
+        if matches and len(matches.groups()) > 1:
+            kargs['named_tmp_file_id'] = matches.group(2)
+        matches = re.search('.*?--parsed_(.*)?--(.*?)\..*', object_key)
+        if matches and len(matches.groups()) > 1:
+            kargs['named_tmp_file_id'] = matches.group(2)
+        matches = re.search('.*?--enriched_(.*)?--(.*?)\..*', object_key)
+        if matches and len(matches.groups()) > 1:
+            kargs['named_tmp_file_id'] = matches.group(2)
         self = super(EventRecord, cls).__new__(cls, **kargs)
         return self
