@@ -8,17 +8,19 @@ from pathlib import Path
 from zipfile import ZipFile
 
 import boto3
+from botocore.config import Config
 
 LOG = logging.getLogger(__name__)
 
 
-def s3_download(bucket_name, key, local_prefix):
+def s3_download(bucket_name, key, local_prefix, aws_region='ap-southeast-2'):
     local_output_path = os.path.dirname("{}{}".format(local_prefix, key))
     local_output = "{}{}".format(local_prefix, key)
     Path(local_output_path).mkdir(parents=True, exist_ok=True)
     LOG.info("Downloading S3: {}/{} to Local: {}".format(
         bucket_name, key, local_output))
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource(
+        's3', aws_region, config=Config(s3={'addressing_style': 'path'}))
     s3.Object(bucket_name, key).download_file(local_output)
     return local_output
 
