@@ -20,19 +20,19 @@ class S3Manager(object):
             bucket_name,
             retailer_code,
     ):
-        self.retailer_code = retailer_code
-        self.s3 = boto3.resource('s3')
-        self.bucket_name = bucket_name
-        self.bucket = self.s3.Bucket(self.bucket_name)
+        self._retailer_code = retailer_code
+        self._s3 = boto3.resource('s3')
+        self._bucket_name = bucket_name
+        self._bucket = self._s3.Bucket(self._bucket_name)
 
     def find_newest_feed(self):
         newest_date = date(1, 1, 1)
         newest_obj = None
         newest_path = None
         newest_filename = None
-        for obj in self.bucket.objects.filter(
+        for obj in self._bucket.objects.filter(
                 Prefix="format=original/retailer_code={}".format(
-                    self.retailer_code)):
+                    self._retailer_code)):
             LOG.debug(obj)
             current_date = path_date_extractor(obj.key)
             if current_date > newest_date:
@@ -51,4 +51,4 @@ class S3Manager(object):
             # TODO if does not exists
             LOG.debug("Downloading S3: {} to Local: {}".format(
                 key, local_output))
-            self.s3.Object(self.bucket_name, key).download_file(local_output)
+            self._s3.Object(self._bucket_name, key).download_file(local_output)
