@@ -46,11 +46,11 @@ class FeedManager(S3Manager):
         self._s3_resource.Object(self._bucket_name, output).put(Body=body)
 
     def is_equal_to_last(self, new_feed_gz):
-        last_feed_content = self._get_last_feed_content()
+        last_feed_content = self.get_last_feed_content()
         new_feed = gzip.decompress(new_feed_gz)
         return new_feed == last_feed_content
 
-    def _get_last_feed_content(self):
+    def get_last_feed_content(self):
         newest_s3_object = self.find_newest_feed()
         local_feed_output_path = "/tmp/feedsldtos3/{}".format(
             newest_s3_object.path)
