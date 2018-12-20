@@ -39,3 +39,24 @@ class S3Manager(object):
             local_prefix, self._bucket_name, key))
         self._s3_client.upload_file(local_prefix, self._bucket_name, key)
         return local_prefix
+
+    def get_list_all_files(self, prefix):
+        list_objects = self._s3_client.list_objects_v2(
+            Bucket=self._bucket_name, Prefix=prefix)
+        list_path_files = [
+            file['Key'] for file in list_objects.get('Contents', [])
+        ]
+        return list_path_files
+
+    def get_list_files_contain(self, prefix, name_file_expected):
+        assert type(name_file_expected) is list
+        matching_paths = []
+        list_path_files = self.get_list_all_files(prefix)
+        for name_expected in name_file_expected:
+            matching_paths += [
+                file for file in list_path_files if name_expected in file
+            ]
+        return matching_paths
+
+    def exists(self, prefix):
+        return len(self.get_list_all_files(prefix)) > 0
