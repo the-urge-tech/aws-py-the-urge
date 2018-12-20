@@ -34,11 +34,11 @@ class S3Manager(object):
         LOG.info("Download: {}".format(local_file_output))
         return local_file_output
 
-    def upload(self, key, local_prefix):
+    def upload(self, key, local_file):
         LOG.info("Uploading Local: {} to S3: {}/{}".format(
-            local_prefix, self._bucket_name, key))
-        self._s3_client.upload_file(local_prefix, self._bucket_name, key)
-        return local_prefix
+            local_file, self._bucket_name, key))
+        self._s3_client.upload_file(local_file, self._bucket_name, key)
+        return local_file
 
     def get_list_all_files(self, prefix):
         list_objects = self._s3_client.list_objects_v2(

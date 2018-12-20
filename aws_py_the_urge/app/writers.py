@@ -6,6 +6,7 @@ from pathlib import Path
 
 import boto3
 from botocore.config import Config
+from aws_py_the_urge.lib.s3_manager import S3Manager
 
 LOG = logging.getLogger(__name__)
 
@@ -25,9 +26,5 @@ def write_jl_gzip(items, key, local_prefix):
 
 
 def s3_upload(bucket_name, key, local_file, aws_region='ap-southeast-2'):
-    LOG.info("Uploading Local: {} to S3: {}/{}".format(local_file, bucket_name,
-                                                       key))
-    s3 = boto3.client(
-        's3', aws_region, config=Config(s3={'addressing_style': 'path'}))
-    s3.upload_file(local_file, bucket_name, key)
-    return local_file
+    s3_manager = S3Manager(bucket_name, aws_region)
+    return s3_manager.upload(key, local_file)
