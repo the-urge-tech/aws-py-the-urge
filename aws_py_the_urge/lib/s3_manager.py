@@ -1,5 +1,4 @@
 import logging
-import os
 from pathlib import Path
 from typing import Any, NamedTuple, Text
 
@@ -7,9 +6,6 @@ import boto3
 from botocore.config import Config
 
 LOG = logging.getLogger(__name__)
-
-S3Object = NamedTuple("S3Object", [("obj", Any), ("path", Text),
-                                   ("filename", Text)])
 
 
 class S3Manager(object):

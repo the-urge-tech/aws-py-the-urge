@@ -4,8 +4,6 @@ import logging
 import os
 from pathlib import Path
 
-import boto3
-from botocore.config import Config
 from aws_py_the_urge.lib.s3_manager import S3Manager
 
 LOG = logging.getLogger(__name__)
