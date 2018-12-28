@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any, NamedTuple, Text
+import os
 
 import boto3
 from botocore.config import Config
@@ -18,10 +18,9 @@ class S3Manager(object):
         self._bucket = self._s3_resource.Bucket(self._bucket_name)
 
     def download(self, key, local_path, file_name):
-        # if not Path(local_output).exists():
-        Path(local_path).mkdir(parents=True, exist_ok=True)
-        # self._s3.Object(self._bucket_name,
-        #                          key).download_file(local_output)
+        local_dir_path = os.path.dirname("{}/{}".format(local_path, key))
+        if not Path(local_dir_path).exists():
+            Path(local_dir_path).mkdir(parents=True, exist_ok=True)
         local_file_output = '{}/{}'.format(local_path, file_name)
         LOG.info("Downloading S3: {}/{} to Local: {}".format(
             self._bucket_name, key, local_file_output))
