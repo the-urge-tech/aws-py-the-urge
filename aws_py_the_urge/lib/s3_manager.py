@@ -22,15 +22,15 @@ class S3Manager(object):
         if not Path(local_dir_path).exists():
             Path(local_dir_path).mkdir(parents=True, exist_ok=True)
         local_file_output = '{}/{}'.format(local_path, file_name)
-        LOG.info("Downloading S3: {}/{} to Local: {}".format(
+        LOG.debug("Downloading S3: {}/{} to Local: {}".format(
             self._bucket_name, key, local_file_output))
         self._s3_client.download_file(self._bucket_name, key,
                                       local_file_output)
-        LOG.info("Download: {}".format(local_file_output))
+        LOG.debug("Downloaded in: {}".format(local_file_output))
         return local_file_output
 
     def upload(self, key, local_file):
-        LOG.info("Uploading Local: {} to S3: {}/{}".format(
+        LOG.debug("Uploading Local: {} to S3: {}/{}".format(
             local_file, self._bucket_name, key))
         self._s3_client.upload_file(local_file, self._bucket_name, key)
         return local_file
