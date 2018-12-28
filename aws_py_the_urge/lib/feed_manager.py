@@ -37,12 +37,12 @@ class FeedManager(S3Manager):
                     '.*?\/(year=.*?\/month=.*?\/day=.*?)\/(.*)', obj.key)
                 newest_path = newest_matches.group(1)
                 newest_filename = newest_matches.group(2)
-        LOG.info("S3Object: {}, {}".format(newest_path, newest_filename))
+        LOG.debug("S3Object: {}, {}".format(newest_path, newest_filename))
         return S3Object(
             obj=newest_obj, path=newest_path, filename=newest_filename)
 
     def put(self, output, body):
-        LOG.info("Put in {}/{}".format(self._bucket_name, output))
+        LOG.debug("Put in {}/{}".format(self._bucket_name, output))
         self._s3_resource.Object(self._bucket_name, output).put(Body=body)
 
     def is_equal_to_last(self, new_feed_gz):
@@ -58,7 +58,7 @@ class FeedManager(S3Manager):
                                                 newest_s3_object.filename)
         LOG.info("Last feed comparing with is in: {}".format(
             local_feed_output_file))
-        LOG.info("Key={}".format(newest_s3_object.obj.key))
+        LOG.debug("Key={}".format(newest_s3_object.obj.key))
         self.download(newest_s3_object.obj.key, local_feed_output_path,
                       newest_s3_object.filename)
         return LocalFileManager(local_feed_output_file).get_feed_content()
