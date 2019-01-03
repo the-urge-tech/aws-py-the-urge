@@ -1,12 +1,12 @@
-import logging
-from typing import Any, NamedTuple, Text
-from datetime import date
-import re
 import gzip
+import logging
+import re
+from datetime import date
+from typing import Any, NamedTuple, Text
 
+from aws_py_the_urge.lib.local_file_manager import LocalFileManager
 from aws_py_the_urge.lib.s3_manager import S3Manager
 from aws_py_the_urge.util.date import path_date_extractor
-from aws_py_the_urge.lib.local_file_manager import LocalFileManager
 
 LOG = logging.getLogger(__name__)
 
@@ -30,6 +30,9 @@ class FeedManager(S3Manager):
                     self._retailer_code)):
             LOG.debug(obj)
             current_date = path_date_extractor(obj.key)
+
+            LOG.debug("current_date: {}".format(current_date))
+            LOG.debug("newest_date: {}".format(newest_date))
             if current_date > newest_date:
                 newest_date = current_date
                 newest_obj = obj
@@ -37,9 +40,10 @@ class FeedManager(S3Manager):
                     '.*?\/(year=.*?\/month=.*?\/day=.*?)\/(.*)', obj.key)
                 newest_path = newest_matches.group(1)
                 newest_filename = newest_matches.group(2)
-        LOG.debug("S3Object: {}, {}".format(newest_path, newest_filename))
-        return S3Object(
+        s3_object = S3Object(
             obj=newest_obj, path=newest_path, filename=newest_filename)
+        LOG.debug("S3Object: {}".format(s3_object))
+        return s3_object
 
     def put(self, output, body):
         LOG.debug("Put in {}/{}".format(self._bucket_name, output))
