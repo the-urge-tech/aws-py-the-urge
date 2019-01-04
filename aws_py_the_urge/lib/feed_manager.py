@@ -1,12 +1,12 @@
 import gzip
 import logging
-import re
-from datetime import date
 from typing import Any, NamedTuple, Text
 
 from aws_py_the_urge.lib.local_file_manager import LocalFileManager
 from aws_py_the_urge.lib.s3_manager import S3Manager
-from aws_py_the_urge.util.date import path_date_extractor
+from aws_py_the_urge.util.date import get_newest_file
+from aws_py_the_urge.util.path_manager import split_path
+from aws_py_the_urge.settings import FILE_EXTENSION
 
 LOG = logging.getLogger(__name__)
 
@@ -21,28 +21,30 @@ class FeedManager(S3Manager):
         self._retailer_code = retailer_code
 
     def find_newest_feed(self):
-        newest_date = date(1, 1, 1)
-        newest_obj = None
-        newest_path = None
-        newest_filename = None
-        for obj in self._bucket.objects.filter(
-                Prefix="format=original/retailer_code={}".format(
-                    self._retailer_code)):
-            LOG.debug(obj)
-            current_date = path_date_extractor(obj.key)
+        prefix = "format=original/retailer_code={}".format(self._retailer_code)
+        list_objects = self.get_list_all_files(prefix=prefix)
+        LOG.debug("list_objects:{}".format(list_objects))
+        if not list_objects:
+            LOG.warning("No files found in {}".format(prefix))
+            return []
 
-            LOG.debug("current_date: {}".format(current_date))
-            LOG.debug("newest_date: {}".format(newest_date))
-            if current_date > newest_date:
-                newest_date = current_date
-                newest_obj = obj
-                newest_matches = re.search(
-                    '.*?\/(year=.*?\/month=.*?\/day=.*?)\/(.*)', obj.key)
-                newest_path = newest_matches.group(1)
-                newest_filename = newest_matches.group(2)
+        prefix_newest_obj = get_newest_file(list_objects, FILE_EXTENSION)
+        LOG.debug("prefix_newest_obj:{}".format(prefix_newest_obj))
+        if not prefix_newest_obj:
+            LOG.error(
+                "The s3 path list does not contain any file with extension {}. List: {}"
+                .format(FILE_EXTENSION, list_objects))
+            return []
+
+        newest_obj = self._s3_resource.Object(self._bucket_name,
+                                              prefix_newest_obj)
+        LOG.debug("newest_obj:{}".format(newest_obj))
+
+        newest_path, newest_filename = split_path(prefix_newest_obj)
         s3_object = S3Object(
             obj=newest_obj, path=newest_path, filename=newest_filename)
         LOG.debug("S3Object: {}".format(s3_object))
+
         return s3_object
 
     def put(self, output, body):
@@ -56,6 +58,8 @@ class FeedManager(S3Manager):
 
     def get_last_feed_content(self):
         newest_s3_object = self.find_newest_feed()
+        if not newest_s3_object:
+            return []
         local_feed_output_path = "/tmp/feedsldtos3/{}".format(
             newest_s3_object.path)
         local_feed_output_file = "{}/{}".format(local_feed_output_path,
