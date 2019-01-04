@@ -18,9 +18,9 @@ class S3Manager(object):
         self._bucket = self._s3_resource.Bucket(self._bucket_name)
 
     def download(self, key, local_path, file_name):
-        local_dir_path = os.path.dirname("{}/{}".format(local_path, key))
-        if not Path(local_dir_path).exists():
-            Path(local_dir_path).mkdir(parents=True, exist_ok=True)
+        # local_dir_path = os.path.dirname("{}/{}".format(local_path, key))
+        if not Path(local_path).exists():
+            Path(local_path).mkdir(parents=True, exist_ok=True)
         local_file_output = '{}/{}'.format(local_path, file_name)
         LOG.debug("Downloading S3: {}/{} to Local: {}".format(
             self._bucket_name, key, local_file_output))
