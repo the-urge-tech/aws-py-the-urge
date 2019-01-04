@@ -20,3 +20,10 @@ To check your local version
 pip show aws-py-the-urge
 # check version
 ```
+
+# Packages using this library
+- enricher 
+- feeds-dl 
+- image-downloader
+- fetcher 
+- ingester 
