@@ -6,7 +6,7 @@ LOG = logging.getLogger(__name__)
 
 
 def path_date_extractor(path):
-    matches = re.search('.*?\/year=(.*)?\/month=(.*)?\/day=(.*)?\/(.*)', path)
+    matches = re.search('.*\/year=(.*?)\/month=(.*?)\/day=(.*?)\/.*', path)
     return date(
         int(matches.group(1)), int(matches.group(2)), int(matches.group(3)))
 
