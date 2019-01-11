@@ -19,19 +19,19 @@ class FeedManager(S3Manager):
         newest_feed = self.find_last_obj(prefix, FILE_EXTENSION)
         return newest_feed
 
-    def get_last_feed_content(self):
-        newest_s3_object = S3Object(self.find_last_feed())
-        if not newest_s3_object:
+    def get_last_feed_content(self, last_feed: S3Object = None):
+        if not last_feed:
+            last_feed = S3Object(self.find_last_feed())
+        if not last_feed:
             return []
-        local_feed_output_path = "/tmp/feedsldtos3/{}".format(
-            newest_s3_object.path)
+        local_feed_output_path = "/tmp/feedsldtos3/{}".format(last_feed.path)
         local_feed_output_file = "{}/{}".format(local_feed_output_path,
-                                                newest_s3_object.filename)
+                                                last_feed.filename)
         LOG.info("Last feed comparing with is in: {}".format(
             local_feed_output_file))
-        LOG.debug("Key={}".format(newest_s3_object.obj.key))
-        self.download(newest_s3_object.obj.key, local_feed_output_path,
-                      newest_s3_object.filename)
+        LOG.debug("Key={}".format(last_feed.obj.key))
+        self.download(last_feed.obj.key, local_feed_output_path,
+                      last_feed.filename)
         return LocalFileManager(local_feed_output_file).get_feed_content()
 
     def put(self, path, body):
