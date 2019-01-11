@@ -1,14 +1,15 @@
 import logging
 from typing import Any, NamedTuple, Text
+from datetime import date
 
 from aws_py_the_urge.lib.s3_parent import S3Parent
 from aws_py_the_urge.util.path_manager import split_path
-from aws_py_the_urge.util.date import get_newest_file
+from aws_py_the_urge.util.date import get_newest_file, path_date_extractor
 
 LOG = logging.getLogger(__name__)
 
-S3Object = NamedTuple("S3Object", [("obj", Any), ("size", int), ("path", Text),
-                                   ("filename", Text)])
+S3Object = NamedTuple("S3Object", [("obj", Any), ("size", int), ("date", date),
+                                   ("path", Text), ("filename", Text)])
 
 
 class S3Manager(S3Parent):
@@ -31,10 +32,12 @@ class S3Manager(S3Parent):
 
         size = S3Manager.__get_size_s3_object(s3_object_received)
         newest_path, newest_filename = split_path(prefix)
+        date_file = path_date_extractor(prefix)
 
         s3_object = S3Object(
             obj=s3_object_received,
             size=size,
+            date=date_file,
             path=newest_path,
             filename=newest_filename)
         LOG.debug("S3Object: {}".format(s3_object))
