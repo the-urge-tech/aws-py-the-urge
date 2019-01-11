@@ -27,7 +27,7 @@ class FeedManager(S3Manager):
         local_feed_output_path = "/tmp/feedsldtos3/{}".format(last_feed.path)
         local_feed_output_file = "{}/{}".format(local_feed_output_path,
                                                 last_feed.filename)
-        LOG.info("Last feed comparing with is in: {}".format(
+        LOG.debug("Last feed is downloading in: {}".format(
             local_feed_output_file))
         LOG.debug("Key={}".format(last_feed.obj.key))
         self.download(last_feed.obj.key, local_feed_output_path,
