@@ -67,7 +67,7 @@ class S3Manager(S3Parent):
     @staticmethod
     def __get_size_s3_object(s3_object):
         try:
-            size = s3_object.content_lengt
+            size = s3_object.content_length
             LOG.debug("s3_object size:{}".format(size))
             return size
         except Exception as e:
