@@ -2,13 +2,13 @@ import gzip
 import logging
 
 from aws_py_the_urge.lib.local_file_manager import LocalFileManager
-from aws_py_the_urge.lib.s3_manager import S3Manager, S3Object
+from aws_py_the_urge.lib.s3_manager.object_manager import ObjectManager, S3Object
 from aws_py_the_urge.settings import FILE_EXTENSION
 
 LOG = logging.getLogger(__name__)
 
 
-class FeedManager(S3Manager):
+class FeedManager(ObjectManager):
     def __init__(self, retailer_code, bucket_name,
                  aws_region='ap-southeast-2'):
         super(FeedManager, self).__init__(bucket_name, aws_region)
@@ -27,8 +27,8 @@ class FeedManager(S3Manager):
         local_feed_output_path = "/tmp/feedsldtos3/{}".format(last_feed.path)
         local_feed_output_file = "{}/{}".format(local_feed_output_path,
                                                 last_feed.filename)
-        LOG.debug("Last feed is downloading in: {}".format(
-            local_feed_output_file))
+        LOG.debug(
+            "Last feed is downloading in: {}".format(local_feed_output_file))
         LOG.debug("Key={}".format(last_feed.obj.key))
         self.download(last_feed.obj.key, local_feed_output_path,
                       last_feed.filename)

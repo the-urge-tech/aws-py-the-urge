@@ -1,10 +1,10 @@
 import logging
-from typing import Any, NamedTuple, Text
 from datetime import date
+from typing import Any, NamedTuple, Text
 
-from aws_py_the_urge.lib.s3_parent import S3Parent
 from aws_py_the_urge.util.path_manager import split_path
 from aws_py_the_urge.util.date import get_newest_file, path_date_extractor
+from aws_py_the_urge.lib.s3_manager.file_manager import FileManager
 
 LOG = logging.getLogger(__name__)
 
@@ -12,25 +12,21 @@ S3Object = NamedTuple("S3Object", [("obj", Any), ("size", int), ("date", date),
                                    ("path", Text), ("filename", Text)])
 
 
-class S3Manager(S3Parent):
+class ObjectManager(FileManager):
     def __init__(self, bucket_name, aws_region='ap-southeast-2'):
-        super(S3Manager, self).__init__(bucket_name, aws_region)
-
-    def get_list_files_contain(self, prefix, name_file_expected: list):
-        matching_paths = []
-        list_path_files = self.get_list_all_files(prefix)
-        for name_expected in name_file_expected:
-            matching_paths += [
-                file for file in list_path_files if name_expected in file
-            ]
-        return matching_paths
+        super(ObjectManager, self).__init__(bucket_name, aws_region)
 
     def get_s3_object(self, prefix):
+        """
+        Get the S3Object from s3.
+        :param prefix: file prefix in s3.
+        :return: S3Object.
+        """
         s3_object_received = self._s3_resource.Object(self._bucket_name,
                                                       prefix)
         LOG.debug("obj:{}".format(s3_object_received))
 
-        size = S3Manager.__get_size_s3_object(s3_object_received)
+        size = ObjectManager.__get_size_s3_object(s3_object_received)
         newest_path, newest_filename = split_path(prefix)
         date_file = path_date_extractor(prefix)
 
@@ -45,10 +41,21 @@ class S3Manager(S3Parent):
         return s3_object
 
     def put_into_s3_object(self, path, body):
+        """
+        Upload the body into the s3 file.
+        :param path: file path in s3.
+        :param body: body file.
+        """
         LOG.debug("Put in {}/{}".format(self._bucket_name, path))
         self._s3_resource.Object(self._bucket_name, path).put(Body=body)
 
     def find_last_obj(self, prefix, file_extension):
+        """
+        Get the last S3Object from s3 ordered by date.
+        :param prefix: path contains the files.
+        :param file_extension: file extension for filtering.
+        :return: last S3Object up to date.
+        """
         list_objects = self.get_list_all_files(prefix=prefix)
         LOG.debug("list_objects:{}".format(list_objects))
         if not list_objects:
@@ -66,6 +73,11 @@ class S3Manager(S3Parent):
 
     @staticmethod
     def __get_size_s3_object(s3_object):
+        """
+        Private method to get the S3Object size.
+        :param s3_object: S3Object.
+        :return: S3Object size.
+        """
         try:
             size = s3_object.content_length
             LOG.debug("s3_object size:{}".format(size))

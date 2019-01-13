@@ -4,7 +4,7 @@ import logging
 import os
 from pathlib import Path
 
-from aws_py_the_urge.lib.s3_manager import S3Manager
+from aws_py_the_urge.lib.s3_manager.file_manager import FileManager
 
 LOG = logging.getLogger(__name__)
 
@@ -24,5 +24,5 @@ def write_jl_gzip(items, key, local_prefix):
 
 
 def s3_upload(bucket_name, key, local_file, aws_region='ap-southeast-2'):
-    s3_manager = S3Manager(bucket_name, aws_region)
-    return s3_manager.upload(key, local_file)
+    s3_file_manager = FileManager(bucket_name, aws_region)
+    return s3_file_manager.upload(key, local_file)

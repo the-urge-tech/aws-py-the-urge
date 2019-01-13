@@ -6,17 +6,17 @@ import os
 import random
 from zipfile import ZipFile
 
-from aws_py_the_urge.lib.s3_manager import S3Manager
+from aws_py_the_urge.lib.s3_manager.file_manager import FileManager
 from aws_py_the_urge.util.path_manager import split_path
 
 LOG = logging.getLogger(__name__)
 
 
 def s3_download(bucket_name, key, local_sub_path, aws_region='ap-southeast-2'):
-    s3_manager = S3Manager(bucket_name, aws_region)
+    s3_file_manager = FileManager(bucket_name, aws_region)
     local_file_path = "{}/{}".format(local_sub_path, key)
     directory, filename = split_path(local_file_path)
-    return s3_manager.download(key, directory, filename)
+    return s3_file_manager.download(key, directory, filename)
 
 
 def read_jl_zip(zipfile, jlfile, sample=0):
