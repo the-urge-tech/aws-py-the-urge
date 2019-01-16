@@ -41,3 +41,13 @@ class LocalFileManager(object):
                 save_uncompressed(feed_content, local_uncompressed_output)
 
         return feed_content
+
+    def get_feed_content_binary(self):
+        feed_content = None
+
+        if os.path.exists(self.file):
+            LOG.debug("Opening the file: {}".format(self.file))
+            with open(self.file, 'rb') as f:
+                return f.read()
+
+        return feed_content
