@@ -37,7 +37,10 @@ class FeedManager(ObjectManager):
     def put(self, path, body):
         self.put_into_s3_object(path, body)
 
-    def is_equal_to_last(self, new_feed_gz, file_extension):
+    def is_equal_to_last(self, new_feed, file_extension):
         last_feed_content = self.get_last_feed_content(file_extension)
-        new_feed = gzip.decompress(new_feed_gz)
-        return new_feed == last_feed_content
+        if file_extension == '.gz':
+            new_feed_decompress = gzip.decompress(new_feed)
+            return new_feed_decompress == last_feed_content
+        else:
+            return new_feed == last_feed_content
