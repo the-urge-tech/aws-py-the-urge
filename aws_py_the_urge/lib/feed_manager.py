@@ -32,7 +32,7 @@ class FeedManager(ObjectManager):
         :return: 
         """
         if not last_feed:
-            last_feed = S3Object(self.find_last_feed(file_extension))
+            last_feed = self.find_last_feed(file_extension)
         if not last_feed:
             return []
         local_feed_output_path = "/tmp/feedsldtos3/{}".format(last_feed.path)
