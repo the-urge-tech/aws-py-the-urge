@@ -17,6 +17,7 @@ class FeedManager(ObjectManager):
     def find_last_feed(self, file_extension=""):
         prefix = "format=original/retailer_code={}".format(self._retailer_code)
         newest_feed = self.find_last_obj(prefix, file_extension)
+        LOG.debug("newest_feed:{}".format(newest_feed))
         return newest_feed
 
     def get_last_feed_content(self,
