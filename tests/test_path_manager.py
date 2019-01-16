@@ -1,7 +1,7 @@
 import unittest
 import logging
 
-from aws_py_the_urge.util.path_manager import split_path
+from aws_py_the_urge.util.path_manager import split_path, get_exension
 
 LOG = logging.getLogger(__name__)
 
@@ -30,3 +30,21 @@ class TestPathManager(unittest.TestCase):
             directory,
             "format=original/retailer_code=au-gucci/year=2019/month=1/day=4")
         self.assertEqual(filename, "")
+
+    def test_extension(self):
+        file_name = "name.gzip"
+        extenison = get_exension(file_name)
+        LOG.debug("extenison: {}".format(extenison))
+        self.assertEqual(extenison, ".gzip")
+
+    def test_extension_empty(self):
+        file_name = "none"
+        extenison = get_exension(file_name)
+        LOG.debug("extenison: {}".format(extenison))
+        self.assertEqual(extenison, "")
+
+    def test_extension_multi(self):
+        file_name = "name.csv.gzip"
+        extenison = get_exension(file_name)
+        LOG.debug("extenison: {}".format(extenison))
+        self.assertEqual(extenison, ".gzip")
