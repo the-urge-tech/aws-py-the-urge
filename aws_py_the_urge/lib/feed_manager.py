@@ -43,6 +43,7 @@ class FeedManager(ObjectManager):
         LOG.debug("Key={}".format(last_feed.obj.key))
         self.download(last_feed.obj.key, local_feed_output_path,
                       last_feed.filename)
+        LOG.debug("get_last_feed_content -> Binary={}".format(binary))
         if binary:
             LocalFileManager(local_feed_output_file).get_feed_content_binary()
 
@@ -61,6 +62,7 @@ class FeedManager(ObjectManager):
         """
         last_feed_content = self.get_last_feed_content(
             file_extension, binary=binary)
+        LOG.debug("is_equal_to_last -> Binary={}".format(binary))
         if binary:
             return new_feed == last_feed_content
 
