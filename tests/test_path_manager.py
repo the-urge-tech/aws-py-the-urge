@@ -48,3 +48,9 @@ class TestPathManager(unittest.TestCase):
         extenison = get_exension(file_name)
         LOG.debug("extenison: {}".format(extenison))
         self.assertEqual(extenison, ".gzip")
+
+    def test_extension_path(self):
+        file_name = "sub1/sub2/name.csv.gzip"
+        extenison = get_exension(file_name)
+        LOG.debug("extenison: {}".format(extenison))
+        self.assertEqual(extenison, ".gzip")
