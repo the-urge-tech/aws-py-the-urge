@@ -1,5 +1,6 @@
 import gzip
 import logging
+from zipfile import ZipFile
 
 from aws_py_the_urge.lib.local_file_manager import LocalFileManager
 from aws_py_the_urge.lib.s3_manager.object_manager import ObjectManager, S3Object
@@ -42,5 +43,9 @@ class FeedManager(ObjectManager):
         if file_extension == '.gz':
             new_feed_decompress = gzip.decompress(new_feed)
             return new_feed_decompress == last_feed_content
-        else:
-            return new_feed == last_feed_content
+        elif file_extension == ".zip":
+            z = ZipFile(new_feed)
+            zfile = z.namelist()[0]
+            new_feed_decompress = zfile.read(zfile)
+            return new_feed == new_feed_decompress
+        return new_feed == last_feed_content
