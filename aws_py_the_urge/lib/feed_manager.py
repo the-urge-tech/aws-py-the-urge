@@ -45,7 +45,8 @@ class FeedManager(ObjectManager):
                       last_feed.filename)
         LOG.debug("get_last_feed_content -> Binary={}".format(binary))
         if binary:
-            LocalFileManager(local_feed_output_file).get_feed_content_binary()
+            return LocalFileManager(
+                local_feed_output_file).get_feed_content_binary()
 
         return LocalFileManager(local_feed_output_file).get_feed_content()
 
