@@ -22,8 +22,8 @@ class FeedManager(ObjectManager):
         return newest_feed
 
     def get_last_feed_content(self,
-                              file_extension="",
                               last_feed: S3Object = None,
+                              file_extension="",
                               binary=False):
         """
         Get the up to date new_feed on s3
@@ -84,6 +84,5 @@ class FeedManager(ObjectManager):
         else:
             LOG.warning(
                 "File extension {} is not neither gz or zip. The file could not be decompressed. Compare the files "
-                "binary. "
-            )
+                "binary. ")
             return new_feed == last_feed_content
