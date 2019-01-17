@@ -4,8 +4,9 @@ aws-py-the-urge
 # change the version in >>>>> setup.py <<<<<<
 
 To update the module in other project:
-```
+
 # change the sha in pipenv
+```
 pipenv update aws-py-the-urge
 pipenv lock -r > requirements.txt
 ```
