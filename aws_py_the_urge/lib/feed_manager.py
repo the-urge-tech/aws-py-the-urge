@@ -64,26 +64,26 @@ class FeedManager(ObjectManager):
         """
         last_feed_content = self.get_last_feed_content(
             file_extension, binary=binary)
-        LOG.debug("is_equal_to_last -> Binary={}".format(binary))
-        LOG.debug("new_feed={}".format(new_feed))
-        LOG.debug("last_feed_content={}".format(last_feed_content))
+
         if binary:
+            LOG.info("Compare the files binary")
             return new_feed == last_feed_content
 
         if file_extension == '.gz':
+            LOG.info("Compare the files with decompress gz")
             new_feed_decompress = gzip.decompress(new_feed)
             LOG.debug("new_feed_decompress_gz: {}".format(new_feed_decompress))
             return new_feed_decompress == last_feed_content
 
         elif file_extension == ".zip":
+            LOG.info("Compare the files with decompress zip")
             z = ZipFile(io.BytesIO(new_feed))
             zfile = z.namelist()[0]
-            LOG.debug("zfile:{}".format(zfile))
             new_feed_decompress = z.read(zfile)
-            LOG.debug("new_feed_decompress_zip: {}".format(new_feed_decompress))
             return new_feed_decompress == last_feed_content
         else:
             LOG.warning(
-                "File extension {} is not neither gz or zip. The file could not be decompressed."
+                "File extension {} is not neither gz or zip. The file could not be decompressed. Compare the files "
+                "binary. "
             )
             return new_feed == last_feed_content

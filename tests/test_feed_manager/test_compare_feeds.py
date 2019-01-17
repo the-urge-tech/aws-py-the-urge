@@ -1,7 +1,6 @@
 import unittest
 import logging
 from unittest.mock import patch
-import io
 from aws_py_the_urge.lib.feed_manager import FeedManager
 
 LOG = logging.getLogger(__name__)
@@ -15,11 +14,7 @@ def moked_get_last_feed_content(*args, **kwargs):
     return {b'test1'}
 
 
-def moked_content_empty(*args, **kwargs):
-    return {}
-
-
-class Test(unittest.TestCase):
+class TestComaringFeeds(unittest.TestCase):
     @patch(
         'aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
         side_effect=moked_s3())
@@ -56,7 +51,7 @@ class Test(unittest.TestCase):
     @patch(
         'aws_py_the_urge.lib.feed_manager.FeedManager.get_last_feed_content',
         side_effect=moked_get_last_feed_content())
-    def test_comparing_feeds_gz_equal(self, mock1, mock2):
+    def test_comparing_feeds_zip_equal(self, mock1, mock2):
         retailer_code = "au-ssense"
         with open("tests/resources/example_zip_file.txt", 'rb') as f:
             response_body = f.read()
