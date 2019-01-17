@@ -12,6 +12,8 @@ def path_date_extractor(path):
 
 
 def get_newest_file(list_path_files, extension=""):
+    LOG.debug("list_path_files: {}".format(list_path_files))
+    LOG.debug("extension: {}".format(extension))
     true_filtered_files = [obj for obj in list_path_files if extension in obj]
     if not true_filtered_files:
         return None
