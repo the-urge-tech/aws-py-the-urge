@@ -75,3 +75,12 @@ class FileManager(S3Parent):
         :return: boolean
         """
         return len(self.get_list_all_files(prefix)) > 0
+
+    def get_metadata(self, key):
+        """
+        Get the metadata of a file in s3 given the key.
+        :param key: s3 key.
+        :return: dict of the metadata.
+        """
+        object = self._s3_client.head_object(Bucket=self._bucket_name, Key=key)
+        return object.get('Metadata', None)
