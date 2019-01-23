@@ -1,7 +1,10 @@
 import logging
 from pathlib import Path
+from typing import NamedTuple, Text
 
 from aws_py_the_urge.lib.s3_manager.s3_parent import S3Parent
+
+FileS3 = NamedTuple("FileS3", [("key", Text), ("meta", dict)])
 
 LOG = logging.getLogger(__name__)
 
@@ -40,7 +43,7 @@ class FileManager(S3Parent):
         self._s3_client.upload_file(local_file, self._bucket_name, key)
         return local_file
 
-    def get_list_all_files(self, prefix):
+    def get_list_all_files(self, prefix, with_meta=False):
         """
         Get the list of all the files contained in prefix.
         :param prefix: s3 prefix.
@@ -48,25 +51,41 @@ class FileManager(S3Parent):
         """
         list_objects = self._s3_client.list_objects_v2(
             Bucket=self._bucket_name, Prefix=prefix)
-        list_path_files = [
-            file['Key'] for file in list_objects.get('Contents', [])
-        ]
+        if with_meta:
+            list_path_files = [
+                FileS3(key=file['Key'], meta=self.get_metadata(file['key']))
+                for file in list_objects.get('Contents', [])
+            ]
+        else:
+            list_path_files = [
+                file['Key'] for file in list_objects.get('Contents', [])
+            ]
         return list_path_files
 
-    def get_list_files_contain(self, prefix, name_file_expected: list):
+    def get_list_files_contain(self,
+                               prefix,
+                               name_file_expected: list,
+                               with_meta=False):
         """
         Get the file list contained in prefix that contain name_file_expected in the name.
         :param prefix: s3 prefix.
         :param name_file_expected: string to use as fileter. 
         :return: list of files.
         """
-        matching_paths = []
-        list_path_files = self.get_list_all_files(prefix)
-        for name_expected in name_file_expected:
-            matching_paths += [
-                file for file in list_path_files if name_expected in file
-            ]
-        return matching_paths
+        matching_files = []
+        list_path_files = self.get_list_all_files(prefix, with_meta)
+        if with_meta:
+            for name_expected in name_file_expected:
+                matching_files += [
+                    file for file in list_path_files
+                    if name_expected in file.key
+                ]
+        else:
+            for name_expected in name_file_expected:
+                matching_files += [
+                    file for file in list_path_files if name_expected in file
+                ]
+        return matching_files
 
     def exists(self, prefix):
         """
