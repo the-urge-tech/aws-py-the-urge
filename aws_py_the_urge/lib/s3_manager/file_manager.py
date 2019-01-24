@@ -53,7 +53,7 @@ class FileManager(S3Parent):
             Bucket=self._bucket_name, Prefix=prefix)
         if with_meta:
             list_path_files = [
-                FileS3(key=file['Key'], meta=self.get_metadata(file['key']))
+                FileS3(key=file['Key'], meta=self.get_metadata(file['Key']))
                 for file in list_objects.get('Contents', [])
             ]
         else:
