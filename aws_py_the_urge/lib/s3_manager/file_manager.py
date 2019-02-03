@@ -103,3 +103,36 @@ class FileManager(S3Parent):
         """
         object = self._s3_client.head_object(Bucket=self._bucket_name, Key=key)
         return object.get('Metadata', None)
+
+    def copy(self, origin_key, destination_key):
+        """
+        Copy the object in the new folder.
+        :param origin_key: key of the copy source
+        :param destination_key: key of the destination source
+        :return:
+        """
+        copy_source = {'Bucket': self._bucket_name, 'Key': origin_key}
+        self._s3_client.copy_object(
+            Bucket=self._bucket_name,
+            CopySource=copy_source,
+            Key=destination_key)
+
+    def move(self, origin_key, destination_key):
+        """
+        Copy the object in the new folder and delete the old one.
+        :param origin_key: key of the copy source
+        :param destination_key: key of the destination source
+        :return:
+        """
+        self.copy(origin_key, destination_key)
+        self.delete([origin_key])
+
+    def delete(self, list_keys: list):
+        """
+        Delete up to 1000 object from s3.
+        :param list_keys: list of the keys object to delete
+        :return:
+        """
+        LOG.warning("You are deleting: {}".format(list_keys))
+        keys = [{'Key': k} for k in list_keys]
+        self._s3_client.delete_objects(Bucket=self._bucket_name, Delete=keys)
