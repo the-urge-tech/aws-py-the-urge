@@ -112,10 +112,11 @@ class FileManager(S3Parent):
         :return:
         """
         copy_source = {'Bucket': self._bucket_name, 'Key': origin_key}
-        self._s3_client.copy_object(
+        response = self._s3_client.copy_object(
             Bucket=self._bucket_name,
             CopySource=copy_source,
             Key=destination_key)
+        return response['CopyObjectResult']
 
     def move(self, origin_key, destination_key):
         """
@@ -124,8 +125,10 @@ class FileManager(S3Parent):
         :param destination_key: key of the destination source
         :return:
         """
-        self.copy(origin_key, destination_key)
-        self.delete([origin_key])
+        response_copy = self.copy(origin_key, destination_key)
+        LOG.info("response_copy: {}".format(response_copy))
+        response_delete = self.delete([origin_key])
+        LOG.info(("response_delete: {}".format(response_delete)))
 
     def delete(self, list_keys: list):
         """
@@ -135,4 +138,6 @@ class FileManager(S3Parent):
         """
         LOG.warning("You are deleting: {}".format(list_keys))
         keys = [{'Key': k} for k in list_keys]
-        self._s3_client.delete_objects(Bucket=self._bucket_name, Delete=keys)
+        response = self._s3_client.delete_objects(
+            Bucket=self._bucket_name, Delete=keys)
+        return response['DeleteMarker']
