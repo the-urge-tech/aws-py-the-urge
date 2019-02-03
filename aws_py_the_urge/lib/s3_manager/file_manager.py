@@ -140,4 +140,4 @@ class FileManager(S3Parent):
         keys = {'Objects': [{'Key': k} for k in list_keys]}
         response = self._s3_client.delete_objects(
             Bucket=self._bucket_name, Delete=keys)
-        return response['DeleteMarker']
+        return response['Deleted']
