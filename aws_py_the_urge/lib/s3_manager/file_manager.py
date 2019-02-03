@@ -139,5 +139,8 @@ class FileManager(S3Parent):
         keys = {'Objects': [{'Key': k} for k in list_keys]}
         response = self._s3_client.delete_objects(
             Bucket=self._bucket_name, Delete=keys)
-        LOG.warning("Result deleting: {}".format(response))
+        if 'Deleted' in response:
+            LOG.warning("Files deleted: {}".format(response['Deleted']))
+        if 'Errors' in response:
+            LOG.warning("Errors deleted files: {}".format(response['Errors']))
         return response
