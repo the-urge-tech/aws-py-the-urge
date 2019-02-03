@@ -137,7 +137,7 @@ class FileManager(S3Parent):
         :return:
         """
         LOG.warning("You are deleting: {}".format(list_keys))
-        keys = [{'Key': k} for k in list_keys]
+        keys = {'Objects': [{'Key': k} for k in list_keys]}
         response = self._s3_client.delete_objects(
             Bucket=self._bucket_name, Delete=keys)
         return response['DeleteMarker']
