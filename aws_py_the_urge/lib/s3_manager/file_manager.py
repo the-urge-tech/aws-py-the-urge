@@ -55,7 +55,7 @@ class FileManager(S3Parent):
         list_objects = self._s3_client.list_objects_v2(
             Bucket=self._bucket_name, Prefix=prefix)
         if with_meta:
-            list_path_files = [
+            list_path_all_files = [
                 FileS3(
                     key=file['Key'],
                     last_modify=file['LastModified'],
@@ -63,12 +63,13 @@ class FileManager(S3Parent):
                 for file in list_objects.get('Contents', [])
             ]
         else:
-            list_path_files = [
+            list_path_all_files = [
                 FileS3(
                     key=file['Key'], last_modify=file['LastModified'], meta={})
                 for file in list_objects.get('Contents', [])
             ]
-        return list_path_files
+        LOG.debug("list_path_all_files: {}".format(list_path_all_files))
+        return list_path_all_files
 
     def get_list_files_contain(self,
                                prefix,
