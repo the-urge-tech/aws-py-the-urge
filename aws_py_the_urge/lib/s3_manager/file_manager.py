@@ -82,11 +82,15 @@ class FileManager(S3Parent):
         :return: list of files.
         """
         matching_files = []
-        list_path_files = self.get_list_all_files(prefix, with_meta)
+        list_path_files = self.get_list_all_files(prefix)
         for name_expected in name_file_expected:
             matching_files += [
                 file for file in list_path_files if name_expected in file.key
             ]
+        if with_meta:
+            for file in matching_files:
+                file.meta = self.get_metadata(file.key)
+
         return matching_files
 
     def exists(self, prefix):
