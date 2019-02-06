@@ -90,7 +90,7 @@ class FileManager(S3Parent):
         if with_meta:
             for file in matching_files:
                 file.meta = self.get_metadata(file.key)
-
+        LOG.debug("list_path_files: {}".format(list_path_files))
         return matching_files
 
     def exists(self, prefix):
