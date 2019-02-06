@@ -1,10 +1,12 @@
 import logging
 from pathlib import Path
 from typing import NamedTuple, Text
+from datetime import datetime
 
 from aws_py_the_urge.lib.s3_manager.s3_parent import S3Parent
 
-FileS3 = NamedTuple("FileS3", [("key", Text), ("meta", dict)])
+FileS3 = NamedTuple("FileS3", [("key", Text), ("last_modify", datetime),
+                               ("meta", dict)])
 
 LOG = logging.getLogger(__name__)
 
@@ -47,18 +49,24 @@ class FileManager(S3Parent):
         """
         Get the list of all the files contained in prefix.
         :param prefix: s3 prefix.
+        :param with_meta if true the matadata is included within the result.
         :return: list of files.
         """
         list_objects = self._s3_client.list_objects_v2(
             Bucket=self._bucket_name, Prefix=prefix)
         if with_meta:
             list_path_files = [
-                FileS3(key=file['Key'], meta=self.get_metadata(file['Key']))
+                FileS3(
+                    key=file['Key'],
+                    last_modify=file['LastModified'],
+                    meta=self.get_metadata(file['Key']))
                 for file in list_objects.get('Contents', [])
             ]
         else:
             list_path_files = [
-                file['Key'] for file in list_objects.get('Contents', [])
+                FileS3(
+                    key=file['Key'], last_modify=file['LastModified'], meta={})
+                for file in list_objects.get('Contents', [])
             ]
         return list_path_files
 
@@ -69,22 +77,16 @@ class FileManager(S3Parent):
         """
         Get the file list contained in prefix that contain name_file_expected in the name.
         :param prefix: s3 prefix.
-        :param name_file_expected: string to use as fileter. 
+        :param name_file_expected: string to use as fileter.
+        :param with_meta if true the matadata is included within the result.
         :return: list of files.
         """
         matching_files = []
         list_path_files = self.get_list_all_files(prefix, with_meta)
-        if with_meta:
-            for name_expected in name_file_expected:
-                matching_files += [
-                    file for file in list_path_files
-                    if name_expected in file.key
-                ]
-        else:
-            for name_expected in name_file_expected:
-                matching_files += [
-                    file for file in list_path_files if name_expected in file
-                ]
+        for name_expected in name_file_expected:
+            matching_files += [
+                file for file in list_path_files if name_expected in file.key
+            ]
         return matching_files
 
     def exists(self, prefix):
@@ -101,8 +103,13 @@ class FileManager(S3Parent):
         :param key: s3 key.
         :return: dict of the metadata.
         """
-        object = self._s3_client.head_object(Bucket=self._bucket_name, Key=key)
-        return object.get('Metadata', None)
+        try:
+            obj = self._s3_client.head_object(
+                Bucket=self._bucket_name, Key=key)
+            return obj.get('Metadata', None)
+        except Exception as e:
+            LOG.warning("File not found or connection error: {}".format(e))
+            return None
 
     def copy(self, origin_key, destination_key):
         """
