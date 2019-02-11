@@ -31,7 +31,7 @@ class ObjectManager(FileManager):
 
     def get_s3_object(self, prefix):
         """
-        Get the S3Object from s3. ATTENTION: method useful only for the gz
+        Get the S3Object from s3. ATTENTION: method useful only if prefix is like ../year=2019/month=4/day=23/...
         :param prefix: file prefix in s3.
         :return: S3Object.
         """
@@ -67,10 +67,8 @@ class ObjectManager(FileManager):
         """
         LOG.debug("Put in {}/{}".format(self._bucket_name, path))
         if content_type and metadata:
-            self._s3_client.put_object(
-                Key=path,
+            self._s3_resource.Object(self._bucket_name, path).put(
                 Body=body,
-                Bucket=self._bucket_name,
                 Metadata={k: str(v)
                           for k, v in metadata.items()},
                 ContentType=content_type)

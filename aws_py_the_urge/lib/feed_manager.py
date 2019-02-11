@@ -63,7 +63,7 @@ class FeedManager(ObjectManager):
         :return: 
         """
         last_feed_content = self.get_last_feed_content(
-            file_extension, binary=binary)
+            file_extension=file_extension, binary=binary)
 
         if binary:
             LOG.info("Compare the files binary")
