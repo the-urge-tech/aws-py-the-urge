@@ -71,7 +71,8 @@ class ObjectManager(FileManager):
                 Key=path,
                 Body=body,
                 Bucket=self._bucket_name,
-                Metadata=metadata,
+                Metadata={k: str(v)
+                          for k, v in metadata.items()},
                 ContentType=content_type)
         else:
             self._s3_resource.Object(self._bucket_name, path).put(Body=body)
