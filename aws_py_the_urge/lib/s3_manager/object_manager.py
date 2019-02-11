@@ -53,14 +53,28 @@ class ObjectManager(FileManager):
 
         return s3_object
 
-    def put_into_s3_object(self, path, body):
+    def put_into_s3_object(self,
+                           path: str,
+                           body,
+                           metadata: dict = None,
+                           content_type: str = None):
         """
         Upload the body into the s3 file.
         :param path: file path in s3.
         :param body: body file.
+        :param metadata: metadata of of the object
+        :param content_type: content type of the object
         """
         LOG.debug("Put in {}/{}".format(self._bucket_name, path))
-        self._s3_resource.Object(self._bucket_name, path).put(Body=body)
+        if content_type and metadata:
+            self._s3_client.put_object(
+                Key=path,
+                Body=body,
+                Bucket=self._bucket_name,
+                Metadata=metadata,
+                ContentType=content_type)
+        else:
+            self._s3_resource.Object(self._bucket_name, path).put(Body=body)
 
     def find_last_obj(self, prefix, file_extension):
         """
