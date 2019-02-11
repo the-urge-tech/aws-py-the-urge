@@ -16,6 +16,19 @@ class ObjectManager(FileManager):
     def __init__(self, bucket_name, aws_region='ap-southeast-2'):
         super(ObjectManager, self).__init__(bucket_name, aws_region)
 
+    def download_body(self, prefix):
+        """
+        Download the body of an object in s3
+        :param prefix: file prefix in s3.
+        :return: bytes
+        """
+        s3_object_received = self._s3_resource.Object(self._bucket_name,
+                                                      prefix)
+        body = s3_object_received.get().get('Body', None)
+        if body:
+            return body.read()
+        return body
+
     def get_s3_object(self, prefix):
         """
         Get the S3Object from s3.
