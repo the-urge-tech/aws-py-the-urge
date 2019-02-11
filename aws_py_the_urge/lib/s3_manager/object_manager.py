@@ -31,7 +31,7 @@ class ObjectManager(FileManager):
 
     def get_s3_object(self, prefix):
         """
-        Get the S3Object from s3.
+        Get the S3Object from s3. ATTENTION: method useful only for the gz
         :param prefix: file prefix in s3.
         :return: S3Object.
         """
