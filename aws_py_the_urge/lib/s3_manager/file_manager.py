@@ -111,12 +111,12 @@ class FileManager(S3Parent):
         try:
             obj = self._s3_client.head_object(
                 Bucket=self._bucket_name, Key=key)
-            return obj.get('Metadata', None)
+            return obj.get('Metadata', {})
         except Exception as e:
             LOG.warning(
                 "File not found or connection error. Key:{} Error:{}".format(
                     key, e))
-            return None
+            return {}
 
     def copy(self, origin_key, destination_key):
         """
