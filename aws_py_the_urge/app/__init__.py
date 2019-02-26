@@ -8,10 +8,11 @@ import re
 import urllib.parse
 from typing import NamedTuple, Text
 
-EventRecordBase = NamedTuple(
-    "EventRecordBase", [("object_key", Text), ("event_name", Text),
-                        ("bucket_name", Text), ("named_tmp_file_id", Text),
-                        ("retailer_code", Text)])
+EventRecordBase = NamedTuple("EventRecordBase", [("object_key", Text),
+                                                 ("event_name", Text),
+                                                 ("bucket_name", Text),
+                                                 ("named_tmp_file_id", Text),
+                                                 ("retailer_code", Text)])
 
 
 # TODO not a good usage of namedtuple
@@ -22,13 +23,7 @@ class EventRecord(EventRecordBase):
         kargs['object_key'] = object_key
         matches = re.search('.*?\/retailer_code=(.*?)\/.*', object_key)
         kargs['retailer_code'] = matches.group(1)
-        matches = re.search('.*?--fetched_(.*)?--(.*?)\..*', object_key)
-        if matches and len(matches.groups()) > 1:
-            kargs['named_tmp_file_id'] = matches.group(2)
-        matches = re.search('.*?--parsed_(.*)?--(.*?)\..*', object_key)
-        if matches and len(matches.groups()) > 1:
-            kargs['named_tmp_file_id'] = matches.group(2)
-        matches = re.search('.*?--enriched_(.*)?--(.*?)\..*', object_key)
+        matches = re.search('.*?--.*?_(.*)?--(.*?)\..*', object_key)
         if matches and len(matches.groups()) > 1:
             kargs['named_tmp_file_id'] = matches.group(2)
         self = super(EventRecord, cls).__new__(cls, **kargs)
