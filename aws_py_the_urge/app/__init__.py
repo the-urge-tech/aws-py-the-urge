@@ -32,8 +32,7 @@ class EventRecord(EventRecordBase):
             self = super(EventRecord, cls).__new__(cls, **kargs)
             return self
         except Exception as e:
-            LOG.exception(
+            LOG.error(
                 "Error while creating EventRecord in aws-py-the-urge: {}\nkargs: {}"
-                .format(e),
-                kargs,
+                .format(e, kargs),
                 exc_info=True)
