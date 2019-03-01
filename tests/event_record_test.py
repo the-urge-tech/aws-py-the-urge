@@ -48,3 +48,12 @@ class EventRecordTests(unittest.TestCase):
             event_name="ObjectCreated:Put")
 
         self.assertEqual(er.named_tmp_file_id, "j9icejmp")
+
+    def test_extract_named_tmp_file_id_alternated(self):
+        er = EventRecord(
+            bucket_name="test1",
+            object_key=
+            "type%3Dalternated/retailer_code%3Dau-ssense/year%3D2019/month%3D3/day%3D1/crawl_id%3D20190301110826__au-ssense/20190301110826__au-ssense--alternated_v2.0--00onxyom.jl.gz",
+            event_name="ObjectCreated:Put")
+
+        self.assertEqual(er.named_tmp_file_id, "00onxyom")
