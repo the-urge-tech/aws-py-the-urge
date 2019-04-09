@@ -61,7 +61,8 @@ class ObjectManager(FileManager):
                            path: str,
                            body,
                            metadata: dict = None,
-                           content_type: str = None):
+                           content_type: str = None,
+                           cache_control: str=None):
         """
         Upload the body into the s3 file.
         :param path: file path in s3.
@@ -75,7 +76,8 @@ class ObjectManager(FileManager):
                 Body=body,
                 Metadata={k: str(v)
                           for k, v in metadata.items()},
-                ContentType=content_type)
+                ContentType=content_type,
+                CacheControl=cache_control)
         else:
             self._s3_resource.Object(self._bucket_name, path).put(Body=body)
 
