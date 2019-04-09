@@ -2,9 +2,9 @@ import logging
 from datetime import date
 from typing import Any, NamedTuple, Text
 
-from aws_py_the_urge.util.path_manager import split_path
-from aws_py_the_urge.util.date import get_newest_file, path_date_extractor
 from aws_py_the_urge.lib.s3_manager.file_manager import FileManager
+from aws_py_the_urge.util.date import get_newest_file, path_date_extractor
+from aws_py_the_urge.util.path_manager import split_path
 
 LOG = logging.getLogger(__name__)
 
@@ -27,6 +27,10 @@ class ObjectManager(FileManager):
         body = s3_object_received.get().get('Body', None)
         if body:
             return body.read()
+        else:
+            LOG.error(
+                "Could not read the streaming_body of {}{} body is: {}".format(
+                    self._bucket_name, prefix, body))
         return body
 
     def get_s3_object(self, prefix):
