@@ -22,7 +22,7 @@ class ObjectManager(FileManager):
         :param prefix: file prefix in s3.
         :return: bytes
         """
-        waiter = self._s3_resource.get_waiter('object_exists')
+        waiter = self._s3_client.get_waiter('object_exists')
         waiter_config = {'Delay': 1, 'MaxAttempts': 10}
         waiter.wait(
             Bucket=self._bucket_name, Key=prefix, WaiterConfig=waiter_config)
@@ -85,7 +85,7 @@ class ObjectManager(FileManager):
         else:
             self._s3_resource.Object(self._bucket_name, path).put(Body=body)
 
-        waiter = self._s3_resource.get_waiter('object_exists')
+        waiter = self._s3_client.get_waiter('object_exists')
         waiter_config = {'Delay': 1, 'MaxAttempts': 10}
         waiter.wait(
             Bucket=self._bucket_name, Key=path, WaiterConfig=waiter_config)
