@@ -85,6 +85,11 @@ class ObjectManager(FileManager):
         else:
             self._s3_resource.Object(self._bucket_name, path).put(Body=body)
 
+        waiter = self._s3_resource.get_waiter('object_exists')
+        waiter_config = {'Delay': 1, 'MaxAttempts': 10}
+        waiter.wait(
+            Bucket=self._bucket_name, Key=path, WaiterConfig=waiter_config)
+
     def find_last_obj(self, prefix, file_extension):
         """
         Get the last S3Object from s3 ordered by date.
