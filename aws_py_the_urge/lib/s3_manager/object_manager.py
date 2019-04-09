@@ -22,6 +22,10 @@ class ObjectManager(FileManager):
         :param prefix: file prefix in s3.
         :return: bytes
         """
+        waiter = self._s3_resource.get_waiter('object_exists')
+        waiter_config = {'Delay': 1, 'MaxAttempts': 10}
+        waiter.wait(
+            Bucket=self._bucket_name, Key=prefix, WaiterConfig=waiter_config)
         s3_object_received = self._s3_resource.Object(self._bucket_name,
                                                       prefix)
         body = s3_object_received.get().get('Body', None)
@@ -29,8 +33,8 @@ class ObjectManager(FileManager):
             return body.read()
         else:
             LOG.error(
-                "Could not read the streaming_body of {}{} body is: {}".format(
-                    self._bucket_name, prefix, body))
+                "Could not read the streaming_body of {}{} body is: {} even though we waited with config {} "
+                .format(self._bucket_name, prefix, body, waiter_config))
         return body
 
     def get_s3_object(self, prefix):
@@ -62,7 +66,7 @@ class ObjectManager(FileManager):
                            body,
                            metadata: dict = None,
                            content_type: str = None,
-                           cache_control: str=None):
+                           cache_control: str = None):
         """
         Upload the body into the s3 file.
         :param path: file path in s3.
