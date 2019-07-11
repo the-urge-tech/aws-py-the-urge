@@ -57,3 +57,21 @@ class EventRecordTests(unittest.TestCase):
             event_name="ObjectCreated:Put")
 
         self.assertEqual(er.named_tmp_file_id, "00onxyom")
+
+    def test_extract_named_tmp_file_id_ingested(self):
+        er = EventRecord(
+            bucket_name="test1",
+            object_key=
+            "type=ingested/retailer_code=au-camilla-and-marc/year=2019/month=5/day=17/crawl_id=20190517010856__au-camilla-and-marc/20190517010856__au-camilla-and-marc--ingested_v2.0-alternated--z0298d5o.jl.gz",
+            event_name="ObjectCreated:Put")
+
+        self.assertEqual(er.named_tmp_file_id, "z0298d5o")
+
+    def test_extract_named_tmp_file_id_dropped(self):
+        er = EventRecord(
+            bucket_name="test1",
+            object_key=
+            "type=dropped/retailer_code=au-bec-and-bridge/year=2019/month=5/day=17/crawl_id=20190517010849__au-bec-and-bridge/20190517010849__au-bec-and-bridge--dropped_v2.0-enriched--e3w9fvyi.jl.gz",
+            event_name="ObjectCreated:Put")
+
+        self.assertEqual(er.named_tmp_file_id, "e3w9fvyi")
