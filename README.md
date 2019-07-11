@@ -28,3 +28,9 @@ pip show aws-py-the-urge
 - image-downloader
 - fetcher 
 - ingester 
+
+# run tests
+```
+cd aws_py_the_urge
+nosetests tests/
+```

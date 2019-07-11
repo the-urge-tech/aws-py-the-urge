@@ -1,6 +1,7 @@
-import unittest
 import logging
+import unittest
 from unittest.mock import patch
+
 from aws_py_the_urge.lib.feed_manager import FeedManager
 
 LOG = logging.getLogger(__name__)
@@ -15,9 +16,8 @@ def moked_get_last_feed_content(*args, **kwargs):
 
 
 class TestComaringFeeds(unittest.TestCase):
-    @patch(
-        'aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
-        side_effect=moked_s3())
+    @patch('aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
+           side_effect=moked_s3())
     @patch(
         'aws_py_the_urge.lib.feed_manager.FeedManager.get_last_feed_content',
         side_effect=moked_get_last_feed_content())
@@ -30,9 +30,8 @@ class TestComaringFeeds(unittest.TestCase):
         mock1.assert_called()
         mock2.assert_called()
 
-    @patch(
-        'aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
-        side_effect=moked_s3())
+    @patch('aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
+           side_effect=moked_s3())
     @patch(
         'aws_py_the_urge.lib.feed_manager.FeedManager.get_last_feed_content',
         side_effect=moked_get_last_feed_content())
@@ -45,9 +44,8 @@ class TestComaringFeeds(unittest.TestCase):
         mock1.assert_called()
         mock2.assert_called()
 
-    @patch(
-        'aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
-        side_effect=moked_s3())
+    @patch('aws_py_the_urge.lib.s3_manager.s3_parent.S3Parent.__init__',
+           side_effect=moked_s3())
     @patch(
         'aws_py_the_urge.lib.feed_manager.FeedManager.get_last_feed_content',
         side_effect=moked_get_last_feed_content())
@@ -56,8 +54,10 @@ class TestComaringFeeds(unittest.TestCase):
         with open("tests/resources/example_zip_file.txt", 'rb') as f:
             response_body = f.read()
 
-        result = FeedManager(retailer_code, "").is_equal_to_last(
-            response_body, binary=False, file_extension=".zip")
+        result = FeedManager(retailer_code,
+                             "").is_equal_to_last(response_body,
+                                                  binary=False,
+                                                  file_extension=".zip")
         LOG.debug("result test_comparing_feeds_equal = {}".format(result))
 
         self.assertTrue(result)
