@@ -20,7 +20,7 @@ def write_jl_gzip(items, key, local_prefix, filter_keys=[]):
     with gzip.open(local_output, "wb") as f:
         for i in items:
             if len(filter_keys) > 0:
-                i = {k: v for k, v in items.items() if k not in filter_keys}
+                i = {k: v for k, v in i.items() if k not in filter_keys}
             f.write((json.dumps(i) + "\n").encode("utf-8"))
     return local_output
 
