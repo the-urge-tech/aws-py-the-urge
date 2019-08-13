@@ -13,16 +13,18 @@ def write_gzip(items, key, local_prefix):
     return write_jl_gzip(items, key, local_prefix)
 
 
-def write_jl_gzip(items, key, local_prefix):
+def write_jl_gzip(items, key, local_prefix, filter_keys=[]):
     local_output_path = os.path.dirname("{}{}".format(local_prefix, key))
     local_output = "{}{}".format(local_prefix, key)
     Path(local_output_path).mkdir(parents=True, exist_ok=True)
-    with gzip.open(local_output, 'wb') as f:
+    with gzip.open(local_output, "wb") as f:
         for i in items:
-            f.write((json.dumps(i) + '\n').encode('utf-8'))
+            if len(filter_keys) > 0:
+                i = {k: v for k, v in items.items() if k not in filter_keys}
+            f.write((json.dumps(i) + "\n").encode("utf-8"))
     return local_output
 
 
-def s3_upload(bucket_name, key, local_file, aws_region='ap-southeast-2'):
+def s3_upload(bucket_name, key, local_file, aws_region="ap-southeast-2"):
     s3_file_manager = FileManager(bucket_name, aws_region)
     return s3_file_manager.upload(key, local_file)
