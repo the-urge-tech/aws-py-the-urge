@@ -6,13 +6,13 @@ setuptools.setup(
     url="https://github.com/the-urge-tech/aws-py-the-urge.git",
     author="the urge",
     author_email="pierre.caserta@gmail.com",
-    description=
-    "An opinionated, minimal cookiecutter template for Python packages",
-    long_description=open('README.md').read(),
+    description="An opinionated, minimal cookiecutter template for Python packages",
+    long_description=open("README.md").read(),
     packages=setuptools.find_packages(),
     install_requires=["boto3"],
     classifiers=[
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ],
 )
