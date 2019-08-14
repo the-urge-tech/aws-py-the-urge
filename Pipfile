@@ -9,6 +9,7 @@ verify_ssl = true
 boto3 = "*"
 pyyaml = "*"
 nose = "*"
+typing = "*"
 
 [requires]
 python_version = "3.7"
