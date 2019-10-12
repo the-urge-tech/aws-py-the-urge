@@ -10,8 +10,7 @@ LOG = logging.getLogger(__name__)
 
 
 class FeedManager(ObjectManager):
-    def __init__(self, retailer_code, bucket_name,
-                 aws_region='ap-southeast-2'):
+    def __init__(self, retailer_code, bucket_name, aws_region="us-east-1"):
         super(FeedManager, self).__init__(bucket_name, aws_region)
         self._retailer_code = retailer_code
 
@@ -21,10 +20,9 @@ class FeedManager(ObjectManager):
         LOG.debug("newest_feed:{}".format(newest_feed))
         return newest_feed
 
-    def get_last_feed_content(self,
-                              last_feed: S3Object = None,
-                              file_extension="",
-                              binary=False):
+    def get_last_feed_content(
+        self, last_feed: S3Object = None, file_extension="", binary=False
+    ):
         """
         Get the up to date new_feed on s3
         :param file_extension: it is possible to define the extension to filter the search
@@ -37,17 +35,15 @@ class FeedManager(ObjectManager):
         if not last_feed:
             return []
         local_feed_output_path = "/tmp/feedsldtos3/{}".format(last_feed.path)
-        local_feed_output_file = "{}/{}".format(local_feed_output_path,
-                                                last_feed.filename)
-        LOG.debug(
-            "Last feed is downloading in: {}".format(local_feed_output_file))
+        local_feed_output_file = "{}/{}".format(
+            local_feed_output_path, last_feed.filename
+        )
+        LOG.debug("Last feed is downloading in: {}".format(local_feed_output_file))
         LOG.debug("Key={}".format(last_feed.obj.key))
-        self.download(last_feed.obj.key, local_feed_output_path,
-                      last_feed.filename)
+        self.download(last_feed.obj.key, local_feed_output_path, last_feed.filename)
         LOG.debug("get_last_feed_content -> Binary={}".format(binary))
         if binary:
-            return LocalFileManager(
-                local_feed_output_file).get_feed_content_binary()
+            return LocalFileManager(local_feed_output_file).get_feed_content_binary()
 
         return LocalFileManager(local_feed_output_file).get_feed_content()
 
@@ -63,13 +59,14 @@ class FeedManager(ObjectManager):
         :return: 
         """
         last_feed_content = self.get_last_feed_content(
-            file_extension=file_extension, binary=binary)
+            file_extension=file_extension, binary=binary
+        )
 
         if binary:
             LOG.info("Compare the files binary")
             return new_feed == last_feed_content
 
-        if file_extension == '.gz':
+        if file_extension == ".gz":
             LOG.info("Compare the files with decompress gz")
             new_feed_decompress = gzip.decompress(new_feed)
             LOG.debug("new_feed_decompress_gz: {}".format(new_feed_decompress))
@@ -84,5 +81,6 @@ class FeedManager(ObjectManager):
         else:
             LOG.warning(
                 "File extension {} is not neither gz or zip. The file could not be decompressed. Compare the files "
-                "binary. ")
+                "binary. "
+            )
             return new_feed == last_feed_content

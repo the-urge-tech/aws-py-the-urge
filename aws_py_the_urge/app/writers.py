@@ -25,6 +25,6 @@ def write_jl_gzip(items, key, local_prefix, filter_keys=[]):
     return local_output
 
 
-def s3_upload(bucket_name, key, local_file, aws_region="ap-southeast-2"):
+def s3_upload(bucket_name, key, local_file, aws_region="us-east-1"):
     s3_file_manager = FileManager(bucket_name, aws_region)
     return s3_file_manager.upload(key, local_file)

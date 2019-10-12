@@ -11,7 +11,7 @@ LOG = logging.getLogger(__name__)
 
 
 class FileManager(S3Parent):
-    def __init__(self, bucket_name, aws_region="ap-southeast-2"):
+    def __init__(self, bucket_name, aws_region="us-east-1"):
         super(FileManager, self).__init__(bucket_name, aws_region)
 
     def download(self, key, local_path, file_name):

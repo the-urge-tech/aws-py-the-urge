@@ -12,7 +12,7 @@ S3Object = namedtuple("S3Object", ["obj", "size", "date", "path", "filename"])
 
 
 class ObjectManager(FileManager):
-    def __init__(self, bucket_name, aws_region="ap-southeast-2"):
+    def __init__(self, bucket_name, aws_region="us-east-1"):
         super(ObjectManager, self).__init__(bucket_name, aws_region)
 
     def download_body(self, prefix):
