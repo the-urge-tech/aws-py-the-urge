@@ -2,6 +2,7 @@ import gzip
 import json
 import logging
 import os
+import urllib.parse
 from pathlib import Path
 
 from aws_py_the_urge.lib.s3_manager.file_manager import FileManager
@@ -27,4 +28,5 @@ def write_jl_gzip(items, key, local_prefix, filter_keys=[]):
 
 def s3_upload(bucket_name, key, local_file, aws_region="us-east-1"):
     s3_file_manager = FileManager(bucket_name, aws_region)
+    LOG.info("upload key: {} encoded: {}".format(key, urllib.parse.quote(key)))
     return s3_file_manager.upload(key, local_file)
