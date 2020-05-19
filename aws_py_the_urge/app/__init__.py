@@ -12,7 +12,14 @@ from collections import namedtuple
 LOG = logging.getLogger(__name__)
 EventRecordBase = namedtuple(
     "EventRecordBase",
-    ["object_key", "event_name", "bucket_name", "named_tmp_file_id", "retailer_code"],
+    [
+        "object_key",
+        "event_name",
+        "bucket_name",
+        "named_tmp_file_id",
+        "retailer_code",
+        "type",
+    ],
 )
 
 
@@ -28,6 +35,8 @@ class EventRecord(EventRecordBase):
             matches = re.search(".*?--.*?_(.*)?--(.*?)\..*", object_key)
             if matches and len(matches.groups()) > 1:
                 kargs["named_tmp_file_id"] = matches.group(2)
+            m = re.search(r"type=(.*?)/", object_key)
+            kargs["type"] = m.group(1)
             self = super(EventRecord, cls).__new__(cls, **kargs)
             return self
         except Exception as e:
