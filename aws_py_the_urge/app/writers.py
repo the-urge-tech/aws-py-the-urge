@@ -16,6 +16,8 @@ def write_gzip(items, key, local_prefix):
 
 def write_jl_gzip(items, key, local_prefix, filter_keys=[]):
     local_output_path = os.path.dirname("{}{}".format(local_prefix, key))
+    if not local_prefix.endswith("/"):
+        local_prefix = "{}/".format(local_prefix)
     local_output = "{}{}".format(local_prefix, key)
     Path(local_output_path).mkdir(parents=True, exist_ok=True)
     with gzip.open(local_output, "wb") as f:

@@ -14,7 +14,9 @@ LOG = logging.getLogger(__name__)
 
 def s3_download(bucket_name, key, local_sub_path, aws_region="us-east-1"):
     s3_file_manager = FileManager(bucket_name, aws_region)
-    local_file_path = "{}/{}".format(local_sub_path, key)
+    if not local_sub_path.endswith("/"):
+        local_sub_path = "{}/".format(local_sub_path)
+    local_file_path = "{}{}".format(local_sub_path, key)
     directory, filename = split_path(local_file_path)
     return s3_file_manager.download(key, directory, filename)
 
