@@ -9,7 +9,7 @@ setuptools.setup(
     description="An opinionated, minimal cookiecutter template for Python packages",
     long_description=open("README.md").read(),
     packages=setuptools.find_packages(),
-    install_requires=["boto3"],
+    install_requires=["boto3", "awesome-slugify"],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
