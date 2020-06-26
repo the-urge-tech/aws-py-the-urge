@@ -1,4 +1,5 @@
 import setuptools
+import pkg_resources
 
 setuptools.setup(
     name="aws_py_the_urge",
@@ -9,6 +10,12 @@ setuptools.setup(
     description="An opinionated, minimal cookiecutter template for Python packages",
     long_description=open("README.md").read(),
     packages=setuptools.find_packages(),
+    package_data={
+        "aws_py_the_urge": [
+            "aws_py_theurge/resources/*",
+            "aws_py_theurge/resources/slug_rules/*",
+        ],
+    },
     install_requires=["boto3", "awesome-slugify"],
     classifiers=[
         "Programming Language :: Python",
