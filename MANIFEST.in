@@ -1,0 +1,2 @@
+recursive-include aws_py_the_urge *.json
+recursive-include aws_py_the_urge *.yaml
