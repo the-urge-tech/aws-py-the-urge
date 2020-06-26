@@ -34,3 +34,13 @@ pip show aws-py-the-urge
 cd aws_py_the_urge
 nosetests tests/
 ```
+
+
+
+```
+
+for i in * 
+do
+echo "\"$i\": [\"${i:0:2}\"]," 
+done
+```

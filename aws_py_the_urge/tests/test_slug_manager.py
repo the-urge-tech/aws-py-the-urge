@@ -32,3 +32,31 @@ class TestSlugManager(unittest.TestCase):
         ).slugify()
         expected = ""
         self.assertEqual(expected, result)
+
+    def test_brand(self):
+        result = SlugManager("en", brand="Ajeсиний").slugify_brand()
+        expected = "ajesinii"
+        self.assertEqual(expected, result)
+
+    def test_language_ru(self):
+        result = SlugManager(
+            "ru",
+            product_name="Сумка с ведром акации",
+            brand="Aje",
+            color="Сумеречный синий",
+            fingerprint="123-ss",
+        ).slugify()
+        expected = "sumka-s-vedrom-akatsii-sumerechnyiy-siniy-aje-123-ss"
+        self.assertEqual(expected, result)
+
+    def test_language_ja(self):
+
+        result = SlugManager(
+            "ja",
+            product_name="Overtureデニムミニスカート",
+            brand="Aje",
+            color="ブルーデニム",
+            fingerprint="123-ss",
+        ).slugify()
+        expected = "burudenimu-aje-overturedenimuminisukato-123-ss"
+        self.assertEqual(expected, result)
