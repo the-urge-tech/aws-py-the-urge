@@ -38,8 +38,8 @@ class SlugManager(object):
             pretranslate = load_slug_rule(self.language)
             slugify_url = Slugify(pretranslate=pretranslate)
             slugify_url.to_lower = True
-            slugify_url.stop_words = ("a", "an", "the")
-            slugify_url.max_length = 200
+            slugify_url.stop_words = []
+            slugify_url.max_length = 1000
             first_bit = slugify_url(
                 "-".join(key_word for key_word in key_word_list if key_word).lower(),
                 max_length=1000,
@@ -54,6 +54,6 @@ class SlugManager(object):
         pretranslate = load_slug_rule(self.language)
         slugify_url = Slugify(pretranslate=pretranslate)
         slugify_url.to_lower = True
-        slugify_url.stop_words = ("a", "an", "the")
-        slugify_url.max_length = 200
+        slugify_url.stop_words = []
+        slugify_url.max_length = 1000
         return slugify_url(self.field_dict["brand"], max_length=1000)
