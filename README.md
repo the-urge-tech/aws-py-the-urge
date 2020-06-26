@@ -41,6 +41,6 @@ nosetests tests/
 
 for i in * 
 do
-echo "\"$i\": [\"${i:0:2}\"]," 
+echo "$i=`cat $i`" 
 done
 ```

@@ -1,7 +1,7 @@
 -i https://pypi.org/simple
 awesome-slugify==1.6.5
-boto3==1.14.10
-botocore==1.17.10
+boto3==1.14.11
+botocore==1.17.11
 docutils==0.15.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 jmespath==0.10.0; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 nose==1.3.7

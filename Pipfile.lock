@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7f05570c5cd07a22c349ed884a8543e37337b5af1b8150e33e01fbbe4eb88821"
+            "sha256": "096fc26e2259b51e07bba87959d8b77df62bec3203b88d0309f07d9389b11b30"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -38,13 +38,6 @@
             ],
             "version": "==1.17.11"
         },
-        "dill": {
-            "hashes": [
-                "sha256:6e12da0d8e49c220e8d6e97ee8882002e624f1160289ce85ec2cc0a5246b3a2e"
-            ],
-            "markers": "python_version >= '2.6' and python_version != '3.0'",
-            "version": "==0.3.2"
-        },
         "docutils": {
             "hashes": [
                 "sha256:6c4f696463b79f1fb8ba0c594b63840ebd41f059e92b31957c46b74a4599b6d0",
@@ -62,12 +55,6 @@
             "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==0.10.0"
         },
-        "klepto": {
-            "hashes": [
-                "sha256:48a0b34938671e14b6be29454c94d5b57cb8934d4fff0970a96bad548bc48c9c"
-            ],
-            "version": "==0.1.9"
-        },
         "nose": {
             "hashes": [
                 "sha256:9ff7c6cc443f8c51994b34a667bbcf45afd6d945be7477b52e97516fd17c53ac",
@@ -76,20 +63,6 @@
             ],
             "index": "pypi",
             "version": "==1.3.7"
-        },
-        "pox": {
-            "hashes": [
-                "sha256:621f3a912531d0c5c71f7d5fd4815b15bf5d0db5b4cea352df14f2ff6bc7c615"
-            ],
-            "version": "==0.2.8"
-        },
-        "pykakasi": {
-            "hashes": [
-                "sha256:13bf0d388e447de0ec1d79066880002de81bd778f0526a49611019117d2cbd31",
-                "sha256:d54194689c50b8ee3840807a12f30e274c399c9575fe9fdcb95b3d2b610fe480"
-            ],
-            "index": "pypi",
-            "version": "==2.0.0"
         },
         "python-dateutil": {
             "hashes": [
