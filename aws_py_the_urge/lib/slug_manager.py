@@ -57,3 +57,11 @@ class SlugManager(object):
         slugify_url.stop_words = ()
         slugify_url.max_length = 1000
         return slugify_url(self.field_dict["brand"], max_length=1000)
+
+    def slugify_fingerprint(self):
+        pretranslate = load_slug_rule(self.language)
+        slugify_url = Slugify(pretranslate=pretranslate)
+        slugify_url.to_lower = True
+        slugify_url.stop_words = ()
+        slugify_url.max_length = 1000
+        return slugify_url(self.field_dict["fingerprint"], max_length=1000)

@@ -19,7 +19,7 @@ class TestSlugManager(unittest.TestCase):
             color="Black",
             fingerprint="123-ss",
         ).slugify()
-        expected = "black-great-brand-product-name-123-ss"
+        expected = "black-a-great-brand-a-product-name-123-ss"
         self.assertEqual(expected, result)
 
     def test_language_does_not_exist(self):
@@ -36,6 +36,12 @@ class TestSlugManager(unittest.TestCase):
     def test_brand(self):
         result = SlugManager("en", brand="Ajeсиний").slugify_brand()
         expected = "ajesinii"
+        self.assertEqual(expected, result)
+
+    def test_fingerprint(self):
+        fingerprint = "34geormfrofroissérosefluo"
+        result = SlugManager("en", fingerprint=fingerprint).slugify_fingerprint()
+        expected = "34geormfrofroisserosefluo"
         self.assertEqual(expected, result)
 
     def test_language_ru(self):
