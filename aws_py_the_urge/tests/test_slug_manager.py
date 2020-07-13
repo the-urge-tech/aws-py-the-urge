@@ -56,7 +56,6 @@ class TestSlugManager(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_language_ja(self):
-
         result = SlugManager(
             "ja",
             product_name="Overtureデニムミニスカート",
@@ -66,3 +65,10 @@ class TestSlugManager(unittest.TestCase):
         ).slugify()
         expected = "burudenimu-aje-overturedenimuminisukato-123-ss"
         self.assertEqual(expected, result)
+
+    # def test_language_ja2(self):
+    #     result = SlugManager("ja", brand="ストライプボタン装飾コート",).slugify_brand()
+    #     print(result)
+    #     current = "sutoraipubotanzhuang-shi-koto"
+    #     expected = "sutoraipubotansoushoku-koto"
+    #     self.assertEqual(expected, result)

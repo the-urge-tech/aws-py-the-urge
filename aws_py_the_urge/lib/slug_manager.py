@@ -19,12 +19,18 @@ class SlugManager(object):
 
     def keyword_list_lookup(self):
         orders = {
-            "en": ["color", "brand", "product_name"],
             "fr": ["product_name", "brand", "color"],
             "it": ["product_name", "brand", "color"],
+            "es": ["product_name", "brand", "color"],
+            "en": ["color", "brand", "product_name"],
             "ja": ["color", "brand", "product_name"],
             "ko": ["color", "brand", "product_name"],
+            "ar": ["color", "brand", "product_name"],
+            "de": ["color", "brand", "product_name"],
             "ru": ["product_name", "color", "brand"],
+            "pt": ["product_name", "color", "brand"],
+            "zh": ["color", "brand", "product_name"],
+            "zh-hans": ["product_name", "color", "brand"],
         }
         return [self.field_dict.get(i, None) for i in orders.get(self.language, [])]
 

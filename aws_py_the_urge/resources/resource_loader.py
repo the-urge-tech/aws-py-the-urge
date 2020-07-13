@@ -73,6 +73,7 @@ def load_slug_rule(language):
         "hindi.json": ["hi"],
         "hungarian.json": ["hu"],
         "italian.json": ["it"],
+        # "japanese.json": ["ja"],
         "latvian.json": ["lv"],
         "lithuanian.json": ["lt"],
         "macedonian.json": ["mk"],
