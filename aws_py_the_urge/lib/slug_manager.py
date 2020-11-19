@@ -57,17 +57,15 @@ class SlugManager(object):
             return friendly_id
 
     def slugify_brand(self):
-        pretranslate = load_slug_rule(self.language)
-        slugify_url = Slugify(pretranslate=pretranslate)
-        slugify_url.to_lower = True
-        slugify_url.stop_words = ()
-        slugify_url.max_length = 1000
-        return slugify_url(self.field_dict["brand"], max_length=1000)
+        return self.slugify_field("brand")
 
     def slugify_fingerprint(self):
+        return self.slugify_field("fingerprint")
+
+    def slugify_field(self, field_name):
         pretranslate = load_slug_rule(self.language)
         slugify_url = Slugify(pretranslate=pretranslate)
         slugify_url.to_lower = True
         slugify_url.stop_words = ()
         slugify_url.max_length = 1000
-        return slugify_url(self.field_dict["fingerprint"], max_length=1000)
+        return slugify_url(self.field_dict[field_name], max_length=1000)

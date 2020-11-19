@@ -38,6 +38,11 @@ class TestSlugManager(unittest.TestCase):
         expected = "ajesinii"
         self.assertEqual(expected, result)
 
+    def test_brand_stop_word(self):
+        result = SlugManager("en", brand="Jac and Jack").slugify_brand()
+        expected = "jac-and-jack"
+        self.assertEqual(expected, result)
+
     def test_fingerprint(self):
         fingerprint = "34geormfrofroissérosefluo"
         result = SlugManager("en", fingerprint=fingerprint).slugify_fingerprint()
