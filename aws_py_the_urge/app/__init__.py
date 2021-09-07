@@ -18,6 +18,7 @@ EventRecordBase = namedtuple(
         "bucket_name",
         "named_tmp_file_id",
         "retailer_code",
+        "spider_name",
         "type",
     ],
 )
@@ -30,13 +31,14 @@ class EventRecord(EventRecordBase):
         try:
             object_key = urllib.parse.unquote(kargs["object_key"])
             kargs["object_key"] = object_key
-            matches = re.search(".*?\/retailer_code=(.*?)\/.*", object_key)
-            kargs["retailer_code"] = matches.group(1)
-            matches = re.search(".*?--.*?_(.*)?--(.*?)\..*", object_key)
-            if matches and len(matches.groups()) > 1:
-                kargs["named_tmp_file_id"] = matches.group(2)
-            m = re.search(r"type=(.*?)/", object_key)
-            kargs["type"] = m.group(1)
+            matches = re.search(
+                r"type=(.*?)/retailer_code=(.*?)/.*/.*__(.*)--.*--(.*?)\..*?",
+                object_key,
+            )
+            kargs["type"] = matches.group(1)
+            kargs["retailer_code"] = matches.group(2)
+            kargs["spider_name"] = matches.group(3)
+            kargs["named_tmp_file_id"] = matches.group(4)
             self = super(EventRecord, cls).__new__(cls, **kargs)
             return self
         except Exception as e:
