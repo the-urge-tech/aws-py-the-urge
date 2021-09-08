@@ -6,17 +6,14 @@ LOG = logging.getLogger(__name__)
 
 
 def path_date_extractor(path):
-    matches = re.search('.*\/year=(.*?)\/month=(.*?)\/day=(.*?)\/.*', path)
-    return date(
-        int(matches.group(1)), int(matches.group(2)), int(matches.group(3)))
+    matches = re.search(".*\/year=(.*?)\/month=(.*?)\/day=(.*?)\/.*", path)
+    return date(int(matches.group(1)), int(matches.group(2)), int(matches.group(3)))
 
 
 def get_newest_file(list_path_files, extension=""):
     LOG.debug("list_path_files: {}".format(list_path_files))
     LOG.debug("extension: {}".format(extension))
-    true_filtered_files = [
-        obj.key for obj in list_path_files if extension in obj.key
-    ]
+    true_filtered_files = [obj.key for obj in list_path_files if extension in obj.key]
     if not true_filtered_files:
         return None
     list_date_files = [path_date_extractor(obj) for obj in true_filtered_files]
@@ -29,5 +26,5 @@ def get_newest_file(list_path_files, extension=""):
 
 
 def crawlid_date_extractor(crawl_id):
-    numbers = crawl_id.split('__')[0]
-    return datetime.strptime(numbers, '%Y%m%d%H%M%S')
+    numbers = crawl_id.split("__")[0]
+    return datetime.strptime(numbers, "%Y%m%d%H%M%S")
