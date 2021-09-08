@@ -69,3 +69,10 @@ class TestTempfile(unittest.TestCase):
         )
         expected = "20210526201725__enau-adidas--business"
         self.assertEqual(crawl_id, expected)
+
+    def test_tempfile_crawlid_extractor5(self):
+        crawl_id = tempfile_crawlid_extractor(
+            "20210908110719__enus-walmart--business--fetched_v2.0--kdl9h61n"
+        )
+        expected = "20210908110719__enus-walmart--business"
+        self.assertEqual(crawl_id, expected)
