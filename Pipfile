@@ -6,11 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-boto3 = "*"
-pyyaml = "*"
-nose = "*"
 awesome-slugify = "*"
-
+aws-xray-sdk = "*"
+boto3 = "*"
+nose = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.7"

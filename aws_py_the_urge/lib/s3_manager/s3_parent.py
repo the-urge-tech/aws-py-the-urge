@@ -1,8 +1,15 @@
 import logging
+import pathlib
 import boto3
+
+# from aws_xray_sdk.core import xray_recorder  # for custom functions
+from aws_xray_sdk.core import patch_all  # should cover all boto3
 from botocore.config import Config
 
 LOG = logging.getLogger(__name__)
+
+if "parsers/" in pathlib.Path(__file__).parent.resolve():
+    patch_all()
 
 # cache it in the lambda global
 cache_s3_client = {}
