@@ -1,15 +1,16 @@
 import logging
 import pathlib
 import boto3
-
-from aws_xray_sdk.core import xray_recorder  # invoked automagically for lambda https://docs.aws.amazon.com/xray-sdk-for-python/latest/reference/basic.html#aws-lambda-integration
-from aws_xray_sdk.core import patch_all
 from botocore.config import Config
 
-LOG = logging.getLogger(__name__)
-
-if "parsers/" in pathlib.Path(__file__).parent.resolve():
+PATH = str(pathlib.Path(__file__).parent.resolve())
+if "parsers/" in PATH:
+    from aws_xray_sdk.core import xray_recorder  # invoked automagially
+    from aws_xray_sdk.core import patch_all
     patch_all()
+
+LOG = logging.getLogger(__name__)
+print(PATH)
 
 # cache it in the lambda global
 cache_s3_client = {}
