@@ -2,8 +2,8 @@ import logging
 import pathlib
 import boto3
 
-# from aws_xray_sdk.core import xray_recorder  # for custom functions
-from aws_xray_sdk.core import patch_all  # should cover all boto3
+from aws_xray_sdk.core import xray_recorder  # invoked automagically for lambda https://docs.aws.amazon.com/xray-sdk-for-python/latest/reference/basic.html#aws-lambda-integration
+from aws_xray_sdk.core import patch_all
 from botocore.config import Config
 
 LOG = logging.getLogger(__name__)

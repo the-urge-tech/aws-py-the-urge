@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from datetime import datetime
 from collections import namedtuple
 
 from aws_py_the_urge.lib.s3_manager.s3_parent import S3Parent
