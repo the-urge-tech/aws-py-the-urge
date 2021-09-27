@@ -1,16 +1,8 @@
 import logging
-import pathlib
 import boto3
 from botocore.config import Config
 
-PATH = str(pathlib.Path(__file__).parent.resolve())
-if "parsers/" in PATH:
-    from aws_xray_sdk.core import xray_recorder  # invoked automagially
-    from aws_xray_sdk.core import patch_all
-    patch_all()
-
 LOG = logging.getLogger(__name__)
-print(PATH)
 
 # cache it in the lambda global
 cache_s3_client = {}
