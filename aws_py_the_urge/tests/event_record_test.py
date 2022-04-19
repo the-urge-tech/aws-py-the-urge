@@ -111,3 +111,13 @@ class EventRecordTests(unittest.TestCase):
 
         self.assertEqual(er.type, "parsed")
         self.assertEqual(er.named_tmp_file_id, "00onxyom")
+
+    def test_extract_walmart_spider_name_timestamp_in_path_and_country(self):
+        er = EventRecord(
+            bucket_name="test1",
+            object_key="country%3Dus/type%3Dparsed/spider_name%3Denus-walmart--business/timestamp%3D019-03-01/crawl_id%3D20190301110826__enus-walmart/20190301110826__enus-walmart--business--parsed_v2.0--00onxyom.jl.gz",
+            event_name="ObjectCreated:Put",
+        )
+
+        self.assertEqual(er.type, "parsed")
+        self.assertEqual(er.named_tmp_file_id, "00onxyom")
