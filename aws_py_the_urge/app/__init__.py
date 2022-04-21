@@ -30,11 +30,11 @@ class EventRecord(EventRecordBase):
             object_key = urllib.parse.unquote(kargs["object_key"])
             kargs["object_key"] = object_key
             matches = re.search(
-                r"type=(.*?)/.*?=(.*?)/.*/.*__(.*)--.*--(.*?)\..*?",
+                r"type=(.*?)/.*/.*__.*--.*--(.*?)\..*?",
                 object_key,
             )
             kargs["type"] = matches.group(1)
-            kargs["named_tmp_file_id"] = matches.group(4)
+            kargs["named_tmp_file_id"] = matches.group(2)
             self = super(EventRecord, cls).__new__(cls, **kargs)
             return self
         except Exception as e:
