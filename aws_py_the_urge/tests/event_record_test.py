@@ -133,3 +133,15 @@ class EventRecordTests(unittest.TestCase):
 
         self.assertEqual(er.type, "parsed")
         self.assertEqual(er.named_tmp_file_id, "00onxyom")
+
+    def test_extract_that_failed1(
+        self,
+    ):
+        er = EventRecord(
+            bucket_name="test1",
+            object_key="country=us/type=fetched/timestamp=2022-04-21/20220421033212__enus-the-body-shop--fetched_v2.0--c7d5k_et.jl.gz",
+            event_name="ObjectCreated:Put",
+        )
+
+        self.assertEqual(er.type, "fetched")
+        self.assertEqual(er.named_tmp_file_id, "c7d5k_et")
