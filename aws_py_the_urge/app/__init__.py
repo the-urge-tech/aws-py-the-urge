@@ -29,10 +29,13 @@ class EventRecord(EventRecordBase):
         try:
             object_key = urllib.parse.unquote(kargs["object_key"])
             kargs["object_key"] = object_key
+            regex = r"type=(.*?)/.*/.*__.*--.*--(.*?)\..*?"
             matches = re.search(
-                r"type=(.*?)/.*/.*__.*--.*--(.*?)\..*?",
+                regex,
                 object_key,
             )
+            if not matches:
+                raise Error(f"{object_key} did not match {regex}")
             kargs["type"] = matches.group(1)
             kargs["named_tmp_file_id"] = matches.group(2)
             self = super(EventRecord, cls).__new__(cls, **kargs)
