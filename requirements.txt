@@ -7,17 +7,14 @@
 
 -i https://pypi.org/simple
 awesome-slugify==1.6.5
-aws-xray-sdk==2.8.0
-boto3==1.18.46
-botocore==1.21.46; python_version >= '3.6'
-future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
-jmespath==0.10.0; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+boto3==1.22.9
+botocore==1.25.9; python_version >= '3.6'
+jmespath==1.0.0; python_version >= '3.7'
 nose==1.3.7
 python-dateutil==2.8.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-pyyaml==5.4.1
-regex==2021.8.28
-s3transfer==0.5.0; python_version >= '3.6'
+pyyaml==6.0
+regex==2022.4.24; python_version >= '3.6'
+s3transfer==0.5.2; python_version >= '3.6'
 six==1.16.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 unidecode==0.4.21
-urllib3==1.26.7; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
-wrapt==1.12.1
+urllib3==1.26.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
