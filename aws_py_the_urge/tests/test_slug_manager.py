@@ -57,7 +57,7 @@ class TestSlugManager(unittest.TestCase):
             color="Сумеречный синий",
             fingerprint="123-ss",
         ).slugify()
-        expected = "sumka-s-vedrom-akatsii-sumerechnyiy-siniy-aje-123-ss"
+        expected = "sumka-s-vedrom-akatsii-sumerechnyi-sinii-aje-123-ss"
         self.assertEqual(expected, result)
 
     def test_language_ja(self):

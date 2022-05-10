@@ -1,6 +1,6 @@
-from slugify import Slugify
-from aws_py_the_urge.resources.resource_loader import load_slug_rule
 import logging
+
+from slugify import slugify
 
 LOG = logging.getLogger(__name__)
 
@@ -41,12 +41,7 @@ class SlugManager(object):
             and self.field_dict["fingerprint"] is not None
         ):
             key_word_list = self.keyword_list_lookup()
-            pretranslate = load_slug_rule(self.language)
-            slugify_url = Slugify(pretranslate=pretranslate)
-            slugify_url.to_lower = True
-            slugify_url.stop_words = ()
-            slugify_url.max_length = 1000
-            first_bit = slugify_url(
+            first_bit = slugify(
                 "-".join(key_word for key_word in key_word_list if key_word).lower(),
                 max_length=1000,
             )
@@ -63,9 +58,4 @@ class SlugManager(object):
         return self.slugify_field("fingerprint")
 
     def slugify_field(self, field_name):
-        pretranslate = load_slug_rule(self.language)
-        slugify_url = Slugify(pretranslate=pretranslate)
-        slugify_url.to_lower = True
-        slugify_url.stop_words = ()
-        slugify_url.max_length = 1000
-        return slugify_url(self.field_dict[field_name], max_length=1000)
+        return slugify(self.field_dict[field_name], max_length=1000)
