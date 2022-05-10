@@ -1,5 +1,6 @@
 import logging
 import unittest
+import pathlib
 from unittest.mock import patch
 
 from aws_py_the_urge.lib.feed_manager import FeedManager
@@ -60,7 +61,8 @@ class TestComaringFeeds(unittest.TestCase):
     )
     def test_comparing_feeds_zip_equal(self, mock1, mock2):
         retailer_code = "au-ssense"
-        with open("aws_py_the_urge/tests/resources/example_zip_file.txt", "rb") as f:
+        path = pathlib.Path(__file__).parent.parent / "resources" / "example_zip_file.txt"
+        with open(path, "rb") as f:
             response_body = f.read()
 
         result = FeedManager(retailer_code, "").is_equal_to_last(
