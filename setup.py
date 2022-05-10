@@ -11,10 +11,12 @@ setuptools.setup(
     long_description=open("README.md").read(),
     packages=setuptools.find_packages(),
     package_data={"": ["*.json", "*.yaml"],},
-    install_requires=["boto3", "awesome-slugify"],
+    install_requires=["boto3", "python-slugify"],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )
